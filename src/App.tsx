@@ -6,13 +6,7 @@ import { InterfaceContract } from "./components/Types";
 import { useBehaviorSubject } from "./usesubscribe";
 import consolere from 'console-remote-client'
 import SmartContracts from "./components/SmartContracts";
-
-consolere.connect({
-  server: 'https://console.re', // optional, default: https://console.re
-  channel: 'walletconnect', // required
-  redirectDefaultConsoleToRemote: false, // optional, default: false
-  disableDefaultConsoleOutput: true, // optional, default: false
-});
+import Receipt from "./components/Receipt";
 
 export const client = new WorkSpacePlugin();
 function App() {
@@ -24,11 +18,24 @@ function App() {
   client.feedback.subscribe((x) => {}).unsubscribe();
   const status = useBehaviorSubject(client.status);
   client.status.subscribe((x) => {}).unsubscribe();
+  const contractsRef = React.useRef(contracts)
+
+
+  React.useEffect(
+    () => {
+      console.log("update contracts", contracts)
+      contractsRef.current = contracts;
+    },
+    [contracts]
+  )
+
 
   function addNewContract(contract: InterfaceContract) {
-    console.log("add contract", contract)
-    setContracts(contracts.concat([contract]));
+    console.log("add contract APP", contract, contractsRef.current)
+    setContracts(contractsRef.current.concat([contract]));
   }
+
+  console.log("app contracts ", contractsRef.current)
 
   return (
     <div className="App">
@@ -69,6 +76,7 @@ function App() {
           <div className="small">{feedback}</div>
         </div>
         <Compiler addNewContract={addNewContract}></Compiler>
+        <Receipt></Receipt>
         <SmartContracts
 					busy={busy}
 					setBusy={setBusy}

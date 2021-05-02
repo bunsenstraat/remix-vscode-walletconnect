@@ -1,11 +1,9 @@
 import { PluginClient } from "@remixproject/plugin";
 import { createClient } from "@remixproject/plugin-webview";
 import WalletConnectQRCodeModal from "@walletconnect/qrcode-modal";
-import consolere from "console-remote-client";
+
 import {
-  CompilationError,
   CompilationResult,
-  IRemixApi,
 } from "@remixproject/plugin-api";
 import { BehaviorSubject } from "rxjs";
 import { TransactionReceipt } from "web3-core";
@@ -54,6 +52,16 @@ export class WorkSpacePlugin extends PluginClient {
     });
 
     this.on(
+      "fileManager",
+      "currentFileChanged",
+      (
+        x:any
+      ) => {
+
+      }
+    );
+
+    this.on(
       "solidity",
       "compilationFinished",
       (
@@ -68,9 +76,17 @@ export class WorkSpacePlugin extends PluginClient {
 
     this.on(
       "udapp" as any,
+      "deploy",
+      (x:any) =>{
+
+      }
+    );
+
+    this.on(
+      "udapp" as any,
       "receipt",
-      function (receipt: TransactionReceipt) {
-        //console.log("RECEIPT", receipt);
+      (x:any) =>{
+
       }
     );
   }

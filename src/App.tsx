@@ -76,13 +76,14 @@ function App() {
           <div className="small">{feedback}</div>
         </div>
         <Compiler addNewContract={addNewContract}></Compiler>
-        <Receipt></Receipt>
+       
         <SmartContracts
 					busy={busy}
 					setBusy={setBusy}
 					// blockscout={blockscout}
 					contracts={contracts}
 				/>
+         <Receipt></Receipt>
       </div>
     </div>
   );

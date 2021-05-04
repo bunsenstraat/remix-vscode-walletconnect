@@ -3,51 +3,30 @@ import { client } from '../App';
 import './Receipt.css';
 import { Alert, Accordion, Button, Card, Form, InputGroup } from 'react-bootstrap';
 import ReceiptItem from './ReceiptItem';
+import { InterfaceReceipt } from './Types';
 
-const Receipt: React.FunctionComponent = () => {
-	const [receipt, setReceipt] = React.useState<any[]>([]);
-	const receiptRef = React.useRef(receipt)
-	console.log("RE REC")
-	console.log(JSON.stringify(receipt))
-	React.useEffect(() => {
-		console.log("init receipt");
-		async function init() {
-			client.on(
-				"udapp" as any,
-				"receipt",
-				async (
-					txReceipt: any
-				) => {
-					console.log("incoming recep")
-					console.log(txReceipt)
-					setReceipt([txReceipt, ...receiptRef.current])
-				}
-			);
+interface ReceiptProperties {
+	receipts: InterfaceReceipt[]
+	clearOutput: () => void
+}
 
-		}
-		init();
-		// eslint-disable-next-line
-	}, []);
+const Receipt: React.FunctionComponent<ReceiptProperties> = (props) => {
 
-	React.useEffect(
-		() => {
-			receiptRef.current = receipt;
-		},
-		[receipt]
-	)
+	const {
+		receipts
+	} = props
 
-	const remove = () => {
-		receiptRef.current = []
-		setReceipt([])
+	const clearOutput = () => {
+		props.clearOutput()
 	}
 
 	return (<Card className='mt-2'>
-		<Card.Header className="p-2">Output</Card.Header>
-		<button className='btn btn-warning btn-sm ml-3 mr-3' onClick={()=>{remove()}}>clear</button>
+		<Card.Header className="p-2 small">Output</Card.Header>
+		<div className='text-muted text-right small mr-3 point' onClick={()=>{clearOutput()}}><i className="fas fa-trash-alt" /></div>
 		<hr></hr>
-		{receipt.map((r, i) => {
+		{receipts.map((r, i) => {
 			return (<>
-				<ReceiptItem index={i} receipt={r}></ReceiptItem>
+				<ReceiptItem key={`receipt_${i}`} index={i} receipt={r}></ReceiptItem>
 			</>
 			)
 		})}

@@ -1,83 +1,110 @@
-import React from 'react';
-import { client } from '../App';
-import './Receipt.css';
-import { Alert, Accordion, Button, Card, Form, InputGroup } from 'react-bootstrap';
+import React, { useState } from "react";
+import { client } from "../App";
+import "./Receipt.css";
+import {
+  Alert,
+  Accordion,
+  Button,
+  Card,
+  Form,
+  InputGroup,
+  Collapse,
+} from "react-bootstrap";
 import copy from "copy-to-clipboard";
+import { InterfaceReceipt } from "./Types";
 interface ReceiptItemProps {
-    receipt: any
-    index: number
+  receipt: InterfaceReceipt;
+  index: number;
 }
 
 const ReceiptItem: React.FunctionComponent<ReceiptItemProps> = (props) => {
-
-
-    const render = (r: any) => {
-
-
-
-        if (typeof r === 'object') {
-            console.log("RENDER")
-
-
-            return (<div>
-                {Object.entries(r).map((a) => (
-                    <div className=''>{
-                        a.map((x, i) => (<div className='row pl-3'><div className={`col text-left small ${i === 0 ? "underline" : ""}`}>
-
-                            {JSON.stringify(x)}
-                            {i > 0 ? <Button
-                                variant="link"
-                                size="sm"
-                                className="mt-0 pt-0 float-right btn"
-                                onClick={() => {
-
-                                    copy(
-                                        JSON.stringify(x)
-                                    );
-
-                                }}
-                            >
-                                <i className="far fa-copy" />
-                            </Button> : ""}
-                        </div></div>))
-                    }</div>
-                ))
-                }
-            </div>)
-        } else {
-            return (<div className='row pl-3'>
-                <div className='col text-left small'>
-                    <Button
-                        variant="link"
-                        size="sm"
-                        className="mt-0 pt-0 float-right btn"
-                        onClick={() => {
-
-                            copy(
-                                JSON.stringify(r)
-                            );
-
-                        }}
-                    >
-                        <i className="far fa-copy" />
-                    </Button>
-                    {JSON.stringify(r)}
-                </div></div>)
-        }
-
-
+  const [open, setOpen] = useState(false);
+  const render = (r: InterfaceReceipt) => {
+    if (typeof r.receipt === "object") {
+      console.log("RENDER");
+      return (
+            <>
+              {Object.entries(r.receipt).map((a, ai) => (
+                <div
+                  id={`receipt_item_${ai}`}
+                  key={`receipt_item_${ai}`}
+                  className=""
+                >
+                  {a.map((x, i) => (
+                    <div className="row pl-3">
+                      <div
+                        className={`col text-left small ${
+                          i === 0 ? "underline" : ""
+                        }`}
+                      >
+                        {JSON.stringify(x)}
+                        {i > 0 ? (
+                          <Button
+                            variant="link"
+                            size="sm"
+                            className="mt-0 pt-0 float-right btn"
+                            onClick={() => {
+                              copy(JSON.stringify(x));
+                            }}
+                          >
+                            <i className="far fa-copy" />
+                          </Button>
+                        ) : (
+                          ""
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ))}
+            </>
+      );
+    } else {
+      return (
+        <div className="row pl-3">
+          <div className="col text-left small">
+            <Button
+              variant="link"
+              size="sm"
+              className="mt-0 pt-0 float-right btn"
+              onClick={() => {
+                copy(JSON.stringify(r.receipt));
+              }}
+            >
+              <i className="far fa-copy" />
+            </Button>
+            {JSON.stringify(r.receipt)}
+          </div>
+        </div>
+      );
     }
+  };
 
+  return (
+    <>
+      <Card.Body className="py-1 px-2 small">
+        <div>
+          <div
+            onClick={() => setOpen(!open)}
+            aria-controls={`receipt_collapse_${props.index}`}
+            aria-expanded={open}
+            className="small underline point text-muted"
+          >
+            {`Run ${props.receipt.method} at ${props.receipt.contractAddress} on ${props.receipt.contract}`}
+            <i hidden={open} className="ml-2 fas fa-caret-down" />
+            <i hidden={!open} className="ml-2 fas fa-caret-up" />
+          </div>
 
+          <Collapse in={open}>
+            <div className="mt-2" id={`receipt_collapse_${props.index}`}>
+              {render(props.receipt)}
+            </div>
+          </Collapse>
+        </div>
+        <hr></hr>
+      </Card.Body>
+    </>
+  );
+};
 
-    return (
-        <>
-            <Card.Body className="py-1 px-2 small">
-                {render(props.receipt)}
-                <hr></hr>
-            </Card.Body>
-        </>
-    )
-}
-
-export default ReceiptItem
+export default ReceiptItem;

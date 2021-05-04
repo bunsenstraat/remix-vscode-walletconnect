@@ -5,7 +5,7 @@ import { CSSTransition } from 'react-transition-group';
 import { AbiInput, AbiItem } from 'web3-utils';
 // import { MoonbeamLib } from '@dexfair/moonbeamLib-web-signer';
 import { client } from "../App";
-import { InterfaceContract } from './Types';
+import { InterfaceContract, InterfaceReceipt } from './Types';
 import Method from './Method';
 import './animation.css';
 
@@ -16,6 +16,8 @@ interface InterfaceDrawMethodProps {
 	setBusy: (state: boolean) => void;
 	abi: AbiItem;
 	address: string;
+	addReceipt: (receipt: InterfaceReceipt) => void;
+	contractName: string;
 }
 function buttonVariant(stateMutability: string | undefined): string {
 	switch (stateMutability) {
@@ -37,7 +39,7 @@ const DrawMethod: React.FunctionComponent<InterfaceDrawMethodProps> = (props) =>
 	const [success, setSuccess] = React.useState<string>('');
 	const [value, setValue] = React.useState<string>('');
 	const [args, setArgs] = React.useState<{ [key: string]: string }>({});
-	const { busy, /* setBusy, */ abi, address } = props;
+	const { busy, /* setBusy, */ abi, address, addReceipt, contractName } = props;
 
 	React.useEffect(() => {
 		const temp: { [key: string]: string } = {};
@@ -75,7 +77,14 @@ const DrawMethod: React.FunctionComponent<InterfaceDrawMethodProps> = (props) =>
 							});
 							console.log(parms)
 							// setBusy(false)
-                            await client.call("udapp" as any, "send", abi, parms, address);
+                            let receiptData = await client.call("udapp" as any, "send", abi, parms, address);
+							const receipt: InterfaceReceipt = {
+								contract: contractName,
+								contractAddress: address,
+								method: abi.name || "unknown",
+								receipt: receiptData
+							}
+							addReceipt(receipt)
 						}}
 					>
 						<small>{abi.stateMutability === 'view' || abi.stateMutability === 'pure' ? 'call' : 'transact'}</small>

@@ -3,13 +3,11 @@ import { Alert, Button, Card, Form, InputGroup } from "react-bootstrap";
 import {
   CompilationError,
   CompilationResult,
-  IRemixApi,
 } from "@remixproject/plugin-api";
 import copy from "copy-to-clipboard";
 import { AbiInput, AbiItem } from "web3-utils";
 import { client } from "../App";
 import Method from "./Method";
-import { TransactionConfig, TransactionReceipt } from "web3-core";
 import { InterfaceContract } from "./Types";
 
 
@@ -38,6 +36,7 @@ function getArguments(abi: AbiItem | null, args: { [key: string]: string }) {
 
 interface InterfaceProps {
   addNewContract: (contract: InterfaceContract) => void; // for SmartContracts
+  setSelected: (select: InterfaceContract) => void; // for At Address
 }
 
 interface CompilationErrorFormatted {
@@ -64,7 +63,7 @@ const Compiler: React.FunctionComponent<InterfaceProps> = (props) => {
   const contractsRef = React.useRef(contracts)
   const constractNameRef = React.useRef(contractName)
 
-  const { addNewContract } = props;
+  const { addNewContract, setSelected } = props;
 
   //console.log("CONTRACTS on LOAD", JSON.stringify(contractsRef.current));
 
@@ -202,7 +201,7 @@ const Compiler: React.FunctionComponent<InterfaceProps> = (props) => {
         setConstructor(element0);
       }
     });
-    //setSelected({ name, address: '', abi: getFunctions(abi) });
+    setSelected({ name, address: '', abi: getFunctions(abi) });
   }
 
   function Contracts() {
@@ -215,37 +214,12 @@ const Compiler: React.FunctionComponent<InterfaceProps> = (props) => {
         {`${key} - ${value}`}
       </option>
     ));
-    // <Button
-    // 								variant="link"
-    // 								size="sm"
-    // 								className="mt-0 pt-0 float-right"
-    // 								disabled={!address}
-    // 								onClick={() => {
-    // 									copy(address);
-    // 								}}
-    // 							>
-    // 								<i className="far fa-copy" />
-    // 							</Button>
+
     return (
       <Form>
         <Form.Group>
-          <Form.Text className="text-muted">
+          <Form.Text className="text-muted text-left">
             <small>CONTRACT</small>
-            <Button
-              variant="link"
-              size="sm"
-              className="mt-0 pt-0 float-right"
-              disabled={!contracts.data[contractName]}
-              onClick={() => {
-                if (contracts.data[contractName]) {
-                  copy(
-                    JSON.stringify(contracts.data[contractName].abi, null, 4)
-                  );
-                }
-              }}
-            >
-              <i className="far fa-copy" />
-            </Button>
             <div style={{ fontSize: "0.9em" }} className="float-right">
               ABI
             </div>
@@ -303,7 +277,7 @@ const Compiler: React.FunctionComponent<InterfaceProps> = (props) => {
       <hr />
       <Contracts />
       <Card>
-        <Card.Header className="p-2">Deploy</Card.Header>
+        <Card.Header className="p-2 small">Deploy</Card.Header>
         <Card.Body className="py-1 px-2">
           <Method
             abi={constructor}

@@ -6,7 +6,7 @@ import { AbiInput, AbiItem } from 'web3-utils';
 // import { MoonbeamLib } from '@dexfair/moonbeamLib-web-signer';
 import DrawMethod from './DrawMethods'
 import ContractCard from './ContractCard'
-import { InterfaceContract } from './Types';
+import { InterfaceContract, InterfaceReceipt } from './Types';
 import Method from './Method';
 import './animation.css';
 
@@ -32,6 +32,7 @@ interface InterfaceSmartContractsProps {
 	setBusy: (state: boolean) => void;
 	// blockscout: string;
 	contracts: InterfaceContract[];
+	addReceipt: (receipt: InterfaceReceipt) => void;
 }
 
 const SmartContracts: React.FunctionComponent<InterfaceSmartContractsProps> = (props) => {
@@ -42,6 +43,7 @@ const SmartContracts: React.FunctionComponent<InterfaceSmartContractsProps> = (p
 		setBusy,
 		// blockscout,
 		contracts,
+		addReceipt
 	} = props;
 
 	React.useEffect(() => {
@@ -52,6 +54,7 @@ const SmartContracts: React.FunctionComponent<InterfaceSmartContractsProps> = (p
 	function DrawContracts() {
 		const items = contracts.map((data: InterfaceContract, index: number) => (
 			<ContractCard
+				addReceipt={addReceipt}
 				busy={busy}
 				setBusy={setBusy}
 				// blockscout={blockscout}
@@ -69,11 +72,11 @@ const SmartContracts: React.FunctionComponent<InterfaceSmartContractsProps> = (p
 
 	return (
 		<div className="SmartContracts">
-			<Alert variant="warning" className="text-center" hidden={contracts.length !== count}>
+			<Alert variant="warning" className="text-center small p-0" hidden={contracts.length !== count}>
 				<small>{error}</small>
 			</Alert>
 			<Card className='mt-2'>
-				<Card.Header className="p-2">Run</Card.Header>
+				<Card.Header className="p-2 small">Run</Card.Header>
 				<Card.Body className="py-1 px-2">
 					{DrawContracts()}
 				</Card.Body></Card>

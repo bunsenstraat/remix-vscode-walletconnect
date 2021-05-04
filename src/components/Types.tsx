@@ -5,3 +5,10 @@ export interface InterfaceContract {
 	address: string;
 	abi: AbiItem[];
 }
+
+export interface InterfaceReceipt {
+	contractAddress: string;
+	receipt: any;
+	method: string;
+	contract: string;
+}

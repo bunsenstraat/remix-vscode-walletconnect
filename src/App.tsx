@@ -2,16 +2,20 @@ import React from "react";
 import "./App.css";
 import { WorkSpacePlugin } from "./Client";
 import Compiler from "./components/compiler";
-import { InterfaceContract } from "./components/Types";
+import { InterfaceContract, InterfaceReceipt } from "./components/Types";
 import { useBehaviorSubject } from "./usesubscribe";
 import consolere from 'console-remote-client'
 import SmartContracts from "./components/SmartContracts";
 import Receipt from "./components/Receipt";
+import AtAddress from "./components/AtAddress";
+import { Card, Form } from "react-bootstrap";
 
 export const client = new WorkSpacePlugin();
 function App() {
   const [contracts, setContracts] = React.useState<InterfaceContract[]>([]);
+  const [receipts, setReceipts] = React.useState<InterfaceReceipt[]>([]);
   const [busy, setBusy] = React.useState<boolean>(false);
+  const [selected, setSelected] = React.useState<InterfaceContract | null>(null);
   const accounts = useBehaviorSubject(client.accounts);
   client.accounts.subscribe((x) => {}).unsubscribe();
   const feedback = useBehaviorSubject(client.feedback);
@@ -19,7 +23,7 @@ function App() {
   const status = useBehaviorSubject(client.status);
   client.status.subscribe((x) => {}).unsubscribe();
   const contractsRef = React.useRef(contracts)
-
+  const receiptRef = React.useRef(receipts)
 
   React.useEffect(
     () => {
@@ -29,10 +33,26 @@ function App() {
     [contracts]
   )
 
+  React.useEffect(
+		() => {
+			receiptRef.current = receipts;
+		},
+		[receipts]
+	)
+
 
   function addNewContract(contract: InterfaceContract) {
     console.log("add contract APP", contract, contractsRef.current)
     setContracts(contractsRef.current.concat([contract]));
+  }
+
+  function addReceipt(receipt: InterfaceReceipt){
+    setReceipts(receiptRef.current.concat([receipt]))
+  }
+
+  function clearOutput(){
+    receiptRef.current = []
+    setReceipts([])
   }
 
   console.log("app contracts ", contractsRef.current)
@@ -40,19 +60,24 @@ function App() {
   return (
     <div className="App">
       <div className="container">
-        <div className="form-group mt-3">
+      <div className="text-muted text-left">
+            <small>Connection</small>
+</div>
+        <Card>
+          <Card.Body>
           {status ? (
             <button
-              className="btn btn-primary  btn-block {status}"
+            className="btn btn-primary mb-3 btn-sm small"
               onClick={async () => await client.disconnect()}
             >
-              disconnect from wallet
+              <i className="fas fa-unlink mr-2"></i>Disconnect from wallet
             </button>
           ) : (
             <button
-              className="btn btn-primary  btn-block mb-3"
+              className="btn btn-primary mb-3 btn-sm small"
               onClick={async () => await client.connect()}
             >
+              <i className="fas fa-link mr-2"></i>
               Connect to wallet
             </button>
           )}
@@ -60,7 +85,7 @@ function App() {
           {status ? (
             <>
               <br></br>
-              <h5>Connected accounts</h5>
+              <small>Connected accounts</small>
             </>
           ) : (
             <></>
@@ -74,16 +99,18 @@ function App() {
           })}
           <br></br>
           <div className="small">{feedback}</div>
-        </div>
-        <Compiler addNewContract={addNewContract}></Compiler>
-       
+          </Card.Body>
+        </Card>
+        <Compiler setSelected={setSelected} addNewContract={addNewContract}></Compiler>
+        <AtAddress busy={false} selected={selected} addNewContract={addNewContract}></AtAddress>
         <SmartContracts
+          addReceipt={addReceipt}
 					busy={busy}
 					setBusy={setBusy}
 					// blockscout={blockscout}
 					contracts={contracts}
 				/>
-         <Receipt></Receipt>
+         <Receipt clearOutput={clearOutput} receipts={receipts}></Receipt>
       </div>
     </div>
   );

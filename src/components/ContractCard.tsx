@@ -5,7 +5,7 @@ import { CSSTransition } from 'react-transition-group';
 import { AbiInput, AbiItem } from 'web3-utils';
 // import { MoonbeamLib } from '@dexfair/moonbeamLib-web-signer';
 import DrawMethod from './DrawMethods'
-import { InterfaceContract } from './Types';
+import { InterfaceContract, InterfaceReceipt } from './Types';
 import Method from './Method';
 import './animation.css';
 
@@ -31,6 +31,7 @@ const ContractCard: React.FunctionComponent<{
 	contract: InterfaceContract;
 	index: number;
 	remove: () => void;
+	addReceipt: (receipt: InterfaceReceipt) => void;
 }> = (props) => {
 	const [enable, setEnable] = React.useState<boolean>(true);
 	const {
@@ -40,6 +41,7 @@ const ContractCard: React.FunctionComponent<{
 		contract,
 		index,
 		remove,
+		addReceipt
 	} = props;
 
 	const colors: { [key: string]: string } = {
@@ -64,10 +66,12 @@ const ContractCard: React.FunctionComponent<{
 					<Accordion.Collapse eventKey={`Methods_${id}`}>
 						<Card.Body className="py-1 px-2">
 							<DrawMethod
+								addReceipt={addReceipt}
 								busy={busy}
 								setBusy={setBusy}
 								abi={abi}
 								address={contract.address}
+								contractName={contract.name}
 							/>
 						</Card.Body>
 					</Accordion.Collapse>

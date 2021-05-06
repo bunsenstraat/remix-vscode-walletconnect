@@ -6018,6 +6018,11 @@ glob@^7.0.3, glob@^7.1.1, glob@^7.1.2, glob@^7.1.3, glob@^7.1.4, glob@^7.1.6:
     once "^1.3.0"
     path-is-absolute "^1.0.0"
 
+global-context@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/global-context/-/global-context-1.1.1.tgz#b53af025ba8a82b48ad9b9bddcf545545f573c21"
+  integrity sha512-rYEx/a/yEZiY/7ckNwJb3du0jaQ1ZIxsoAZILbxPSh6iR/buCXtNOZJz7E80yVf5Wyz1Pz4pOKE8pMiJFgJS8g==
+
 global-dirs@^0.1.0:
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/global-dirs/-/global-dirs-0.1.1.tgz#b319c0dd4607f353f3be9cca4c72fc148c49f445"
@@ -10087,6 +10092,16 @@ react-dev-utils@^11.0.3:
     strip-ansi "6.0.0"
     text-table "0.2.0"
 
+react-dom@^16.4.1:
+  version "16.14.0"
+  resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-16.14.0.tgz#7ad838ec29a777fb3c75c3a190f661cf92ab8b89"
+  integrity sha512-1gCeQXDLoIqMgqD3IO2Ah9bnf0w9kzhwN5q4FGnHZ67hBm9yePzB5JJAIQCc8x3pFnNlwFq4RidZggNAAkzWWw==
+  dependencies:
+    loose-envify "^1.1.0"
+    object-assign "^4.1.1"
+    prop-types "^15.6.2"
+    scheduler "^0.19.1"
+
 react-dom@^17.0.2:
   version "17.0.2"
   resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-17.0.2.tgz#ecffb6845e3ad8dbfcdc498f0d0a939736502c23"
@@ -10100,6 +10115,15 @@ react-error-overlay@^6.0.9:
   version "6.0.9"
   resolved "https://registry.yarnpkg.com/react-error-overlay/-/react-error-overlay-6.0.9.tgz#3c743010c9359608c375ecd6bc76f35d93995b0a"
   integrity sha512-nQTTcUu+ATDbrSD1BZHr5kgSD4oF8OFjxun8uAaL8RwPBacGBNPf/yAuVVdx17N8XNzRDMrZ9XcKZHCjPW+9ew==
+
+react-fullscreen-loading@^0.0.4:
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/react-fullscreen-loading/-/react-fullscreen-loading-0.0.4.tgz#b7412a2b5065104e224dd5ee53fef7a0b459de8b"
+  integrity sha512-1A6hDn5XTD95UMWCgVuS/V1HNaw84NlztgTxJLyNSxkEbp2rzSPx8/94eBPNgbNMbUb5PJpXV2yxwA/vVjkShQ==
+  dependencies:
+    prop-types "^15.6.2"
+    react "^16.4.1"
+    react-dom "^16.4.1"
 
 react-is@^16.3.2, react-is@^16.8.1:
   version "16.13.1"
@@ -10201,6 +10225,11 @@ react-scripts@4.0.3:
   optionalDependencies:
     fsevents "^2.1.3"
 
+react-spinners-loading@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/react-spinners-loading/-/react-spinners-loading-1.0.0.tgz#737c45368680d952c75d5e501b9ede0af9a919cc"
+  integrity sha512-bT8BzVXIRaZKj6ewcxTKkLDL7A3rDT4PcKOY6FCIsxP1xqqro9d8Z4KCTQ4TYCqMc4Rvw6I5HvCf5l3j//C3KA==
+
 react-transition-group@^4.4.1:
   version "4.4.1"
   resolved "https://registry.yarnpkg.com/react-transition-group/-/react-transition-group-4.4.1.tgz#63868f9325a38ea5ee9535d828327f85773345c9"
@@ -10209,6 +10238,15 @@ react-transition-group@^4.4.1:
     "@babel/runtime" "^7.5.5"
     dom-helpers "^5.0.1"
     loose-envify "^1.4.0"
+    prop-types "^15.6.2"
+
+react@^16.4.1:
+  version "16.14.0"
+  resolved "https://registry.yarnpkg.com/react/-/react-16.14.0.tgz#94d776ddd0aaa37da3eda8fc5b6b18a4c9a3114d"
+  integrity sha512-0X2CImDkJGApiAlcf0ODKIneSwBPhqJawOa5wCtKbu7ZECrmS26NvtSILynQ66cgkT/RJ4LidJOc3bUESwmU8g==
+  dependencies:
+    loose-envify "^1.1.0"
+    object-assign "^4.1.1"
     prop-types "^15.6.2"
 
 react@^17.0.2:
@@ -10751,6 +10789,14 @@ saxes@^5.0.0:
   integrity sha512-5LBh1Tls8c9xgGjw3QrMwETmTMVk0oFgvrFSvWx62llR2hcEInrKNZ2GZCCuuy2lvWrdl5jhbpeqc5hRYKFOcw==
   dependencies:
     xmlchars "^2.2.0"
+
+scheduler@^0.19.1:
+  version "0.19.1"
+  resolved "https://registry.yarnpkg.com/scheduler/-/scheduler-0.19.1.tgz#4f3e2ed2c1a7d65681f4c854fa8c5a1ccb40f196"
+  integrity sha512-n/zwRWRYSUj0/3g/otKDRPMh6qv2SYMWNq85IEa8iZyAv8od9zDYpGSnpBEjNgcMNq6Scbu5KfIPxNF72R/2EA==
+  dependencies:
+    loose-envify "^1.1.0"
+    object-assign "^4.1.1"
 
 scheduler@^0.20.2:
   version "0.20.2"

@@ -9,6 +9,7 @@ import SmartContracts from "./components/SmartContracts";
 import Receipt from "./components/Receipt";
 import AtAddress from "./components/AtAddress";
 import { Card, Form } from "react-bootstrap";
+import Loading from "react-fullscreen-loading";
 
 export const client = new WorkSpacePlugin();
 function App() {
@@ -60,6 +61,7 @@ function App() {
   return (
     <div className="App">
       <div className="container">
+      <Loading loading={busy} background="#000000" loaderColor="#ffffff" />
       <div className="text-muted text-left">
             <small>Connection</small>
 </div>
@@ -101,7 +103,9 @@ function App() {
           <div className="small">{feedback}</div>
           </Card.Body>
         </Card>
-        <Compiler setSelected={setSelected} addNewContract={addNewContract}></Compiler>
+        {status ? (
+          <>
+        <Compiler setBusy={setBusy} setSelected={setSelected} addNewContract={addNewContract}></Compiler>
         <AtAddress busy={false} selected={selected} addNewContract={addNewContract}></AtAddress>
         <SmartContracts
           addReceipt={addReceipt}
@@ -110,7 +114,8 @@ function App() {
 					// blockscout={blockscout}
 					contracts={contracts}
 				/>
-         <Receipt clearOutput={clearOutput} receipts={receipts}></Receipt>
+         <Receipt clearOutput={clearOutput} receipts={receipts}></Receipt></>
+        ):<></>}
       </div>
     </div>
   );

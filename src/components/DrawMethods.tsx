@@ -39,7 +39,7 @@ const DrawMethod: React.FunctionComponent<InterfaceDrawMethodProps> = (props) =>
 	const [success, setSuccess] = React.useState<string>('');
 	const [value, setValue] = React.useState<string>('');
 	const [args, setArgs] = React.useState<{ [key: string]: string }>({});
-	const { busy, /* setBusy, */ abi, address, addReceipt, contractName } = props;
+	const { busy,  setBusy, abi, address, addReceipt, contractName } = props;
 
 	React.useEffect(() => {
 		const temp: { [key: string]: string } = {};
@@ -70,13 +70,13 @@ const DrawMethod: React.FunctionComponent<InterfaceDrawMethodProps> = (props) =>
 						block
 						size="sm"
 						onClick={async () => {
-							// setBusy(true)
+							setBusy(true)
 							const parms: string[] = [];
 							abi.inputs?.forEach((item: AbiInput) => {
 								parms.push(args[item.name]);
 							});
 							console.log(parms)
-							// setBusy(false)
+							// 
                             let receiptData = await client.call("udapp" as any, "send", abi, parms, address);
 							const receipt: InterfaceReceipt = {
 								contract: contractName,
@@ -85,6 +85,7 @@ const DrawMethod: React.FunctionComponent<InterfaceDrawMethodProps> = (props) =>
 								receipt: receiptData
 							}
 							addReceipt(receipt)
+							setBusy(false)
 						}}
 					>
 						<small>{abi.stateMutability === 'view' || abi.stateMutability === 'pure' ? 'call' : 'transact'}</small>

@@ -37,6 +37,7 @@ function getArguments(abi: AbiItem | null, args: { [key: string]: string }) {
 interface InterfaceProps {
   addNewContract: (contract: InterfaceContract) => void; // for SmartContracts
   setSelected: (select: InterfaceContract) => void; // for At Address
+  setBusy: (state: boolean) => void;
 }
 
 interface CompilationErrorFormatted {
@@ -267,9 +268,15 @@ const Compiler: React.FunctionComponent<InterfaceProps> = (props) => {
     const parms: string[] = getArguments(constructor, args);
     console.log(parms);
     console.log(contractName);
+    props.setBusy(true)
     try {
+      
       await client.call("udapp" as any, "deploy", contractName, parms);
-    } catch (e) { }
+      
+    } catch (e) { 
+      props.setBusy(false)
+    }
+    props.setBusy(false)
   };
 
   return (

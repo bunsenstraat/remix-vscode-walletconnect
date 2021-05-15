@@ -270,10 +270,14 @@ const Compiler: React.FunctionComponent<InterfaceProps> = (props) => {
     console.log(contractName);
     props.setBusy(true)
     try {
-      
+      setErrors([])
       await client.call("udapp" as any, "deploy", contractName, parms);
       
     } catch (e) { 
+      setErrors([{
+        message: e.toString(),
+        severity: "error"
+      }])
       props.setBusy(false)
     }
     props.setBusy(false)

@@ -31,20 +31,21 @@ const ReceiptItem: React.FunctionComponent<ReceiptItemProps> = (props) => {
                   className=""
                 >
                   {a.map((x, i) => (
+                   
                     <div className="row pl-3">
                       <div
                         className={`col text-left small ${
                           i === 0 ? "underline" : ""
                         }`}
                       >
-                        {JSON.stringify(x)}
+                        {JSON.stringify(x).replaceAll('"','')}
                         {i > 0 ? (
                           <Button
                             variant="link"
                             size="sm"
                             className="mt-0 pt-0 float-right btn"
                             onClick={() => {
-                              copy(JSON.stringify(x));
+                              copy(JSON.stringify(x).replaceAll('"',''));
                             }}
                           >
                             <i className="far fa-copy" />
@@ -68,12 +69,12 @@ const ReceiptItem: React.FunctionComponent<ReceiptItemProps> = (props) => {
               size="sm"
               className="mt-0 pt-0 float-right btn"
               onClick={() => {
-                copy(JSON.stringify(r.receipt));
+                copy(JSON.stringify(r.receipt).replaceAll('"',''));
               }}
             >
               <i className="far fa-copy" />
             </Button>
-            {JSON.stringify(r.receipt)}
+            {JSON.stringify(r.receipt).replaceAll('"','')}
           </div>
         </div>
       );

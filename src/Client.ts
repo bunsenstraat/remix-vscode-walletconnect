@@ -2,21 +2,18 @@ import { PluginClient } from "@remixproject/plugin";
 import { createClient } from "@remixproject/plugin-webview";
 import WalletConnectQRCodeModal from "@walletconnect/qrcode-modal";
 
-import {
-  CompilationResult,
-} from "@remixproject/plugin-api";
+import { CompilationResult } from "@remixproject/plugin-api";
 import { BehaviorSubject } from "rxjs";
-import { TransactionReceipt } from "web3-core";
+
 export class WorkSpacePlugin extends PluginClient {
   callBackEnabled: boolean = true;
   feedback = new BehaviorSubject<string>("");
-  accounts = new BehaviorSubject<string[]>([""]);
+  accounts = new BehaviorSubject<string[] | undefined>(undefined);
   status = new BehaviorSubject<boolean>(false);
   compilationresult = new BehaviorSubject<any>({});
   constructor() {
     super();
 
-    console.log("CONSTRUCTOR");
     createClient(this);
     this.methods = ["qr", "dismiss"];
     this.onload()
@@ -29,7 +26,6 @@ export class WorkSpacePlugin extends PluginClient {
   }
 
   async setCallBacks() {
-    console.log("set listeners");
     let me = this;
 
     this.on("walletconnect" as any, "displayUri", async function (x: string) {
@@ -47,19 +43,11 @@ export class WorkSpacePlugin extends PluginClient {
 
     this.on("walletconnect" as any, "disconnect", async function (x: any) {
       me.feedback.next("Disconnected");
-      me.accounts.next([""]);
+      me.accounts.next(undefined);
       me.status.next(false);
     });
 
-    this.on(
-      "fileManager",
-      "currentFileChanged",
-      (
-        x:any
-      ) => {
-
-      }
-    );
+    this.on("fileManager", "currentFileChanged", (x: any) => {});
 
     this.on(
       "solidity",
@@ -74,21 +62,9 @@ export class WorkSpacePlugin extends PluginClient {
       }
     );
 
-    this.on(
-      "udapp" as any,
-      "deploy",
-      (x:any) =>{
+    this.on("udapp" as any, "deploy", (x: any) => {});
 
-      }
-    );
-
-    this.on(
-      "udapp" as any,
-      "receipt",
-      (x:any) =>{
-
-      }
-    );
+    this.on("udapp" as any, "receipt", (x: any) => {});
   }
 
   async detectNetwork(id: number) {
@@ -126,7 +102,34 @@ export class WorkSpacePlugin extends PluginClient {
   async disconnect() {
     console.log("disconnect");
     WalletConnectQRCodeModal.close();
+    try {
+      await this.call("walletconnect" as any, "disconnect");
+    } catch (e) {
+      this.feedback.next("Disconnected");
+      this.accounts.next(undefined);
+      this.status.next(false);
+    }
+  }
 
-    this.call("walletconnect" as any, "disconnect");
+  async addNetwork(network: string) {
+    try {
+      await this.call("udapp" as any, "addNetwork", network);
+      await this.getAccounts();
+    } catch (e) {
+      this.feedback.next(e)
+    }
+  }
+  async setAccount(account: string){
+    await this.call("udapp" as any, "setAccount", account);
+  }
+
+  async getAccounts() {
+    const accounts = await this.call("udapp" as any, "getAccounts");
+    console.log(accounts);
+    this.accounts.next(accounts);
+    this.status.next(accounts.length > 0);
+    this.feedback.next(
+      accounts.length > 0 ? "Connected" : "No accounts found."
+    );
   }
 }

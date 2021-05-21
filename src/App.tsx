@@ -93,7 +93,7 @@ function App() {
             {(accounts && accounts?.length > 0)?
           
             <Form.Group controlId="exampleForm.ControlSelect1">
-              <Form.Label>Select Account {accounts.length}</Form.Label>
+              <Form.Label>Select Account</Form.Label>
               <Form.Control as="select" onChange={(e)=>{client.setAccount(e.target.value)}}>
                 {accounts?.map((account, index) => {
                   return <option value={account}>{account}</option>;

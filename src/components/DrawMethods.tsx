@@ -120,8 +120,8 @@ const DrawMethod: React.FunctionComponent<InterfaceDrawMethodProps> = (
           >
             <small>
               {abi.stateMutability === "view" || abi.stateMutability === "pure"
-                ? "call"
-                : "transact"}
+                ? abi.name
+                : abi.name}
             </small>
           </Button>
           <Button

@@ -36,3 +36,19 @@
     transform: rotate(360deg);
   }
 }
+
+.walletconnect-modal__base{
+  max-width: 300px !important;
+}
+
+.walletconnect-qrcode__text {
+  font-size: 12px !important;
+}
+
+.walletconnect-modal__footer {
+  display: none !important;
+}
+
+.pointer {
+  cursor: pointer;
+}

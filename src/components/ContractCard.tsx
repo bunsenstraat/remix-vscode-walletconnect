@@ -55,15 +55,15 @@ const ContractCard: React.FunctionComponent<{
 		const items = list.map((abi: AbiItem, id: number) => (
 			<Accordion key={`Methods_A_${id.toString()}`}>
 				<Card>
-					<Accordion.Toggle
+{/* 					<Accordion.Toggle
 						style={{ color: 'white', backgroundColor: colors[buttonVariant(abi.stateMutability)] }}
 						as={Card.Header}
 						eventKey={`Methods_${id}`}
 						className="p-1  custom-select"
 					>
-						<small>{abi.name}</small>
+						<small>{abi.name} card</small>
 					</Accordion.Toggle>
-					<Accordion.Collapse eventKey={`Methods_${id}`}>
+					<Accordion.Collapse eventKey={`Methods_${id}`}> */}
 						<Card.Body className="py-1 px-2">
 							<DrawMethod
 								addReceipt={addReceipt}
@@ -74,7 +74,7 @@ const ContractCard: React.FunctionComponent<{
 								contractName={contract.name}
 							/>
 						</Card.Body>
-					</Accordion.Collapse>
+{/* 					</Accordion.Collapse> */}
 				</Card>
 			</Accordion>
 		));
@@ -84,7 +84,7 @@ const ContractCard: React.FunctionComponent<{
 
 	return (
 		<CSSTransition in={enable} timeout={300} classNames="zoom" unmountOnExit onExited={remove}>
-			<Card className="mb-2">
+			<Card className="mb-2 pointer">
 				<Accordion.Toggle as={Card.Header} eventKey={`ccard_${index.toString()}`} className="px-2 py-1 form-control custom-select">
 					<strong className="align-middle">{contract.name}</strong>
 					&nbsp;

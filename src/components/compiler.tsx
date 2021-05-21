@@ -221,6 +221,19 @@ const Compiler: React.FunctionComponent<InterfaceProps> = (props) => {
         <Form.Group>
           <Form.Text className="text-muted text-left">
             <small>CONTRACT</small>
+            <Button
+							variant="link"
+							size="sm"
+							className="mt-0 pt-0 float-right"
+							disabled={!contracts.data[contractName]}
+							onClick={() => {
+								if (contracts.data[contractName]) {
+									copy(JSON.stringify(contracts.data[contractName].abi, null, 4));
+								}
+							}}
+						>
+							<i className="far fa-copy" />
+						</Button>
             <div style={{ fontSize: "0.9em" }} className="float-right">
               ABI
             </div>

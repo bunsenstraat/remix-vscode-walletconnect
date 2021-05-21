@@ -29,13 +29,14 @@ export class WorkSpacePlugin extends PluginClient {
     let me = this;
 
     this.on("walletconnect" as any, "displayUri", async function (x: string) {
-      await me.qr(x);
+      me.qr(x);
     });
 
     this.on("walletconnect" as any, "accountsChanged", async function (x: any) {
       me.accounts.next(x);
       await me.dismiss();
       me.status.next(x.length > 0);
+      me.feedback.next(x.length >0 ? 'Connected':'No accounts connected')
     });
     this.on("walletconnect" as any, "chainChanged", async function (x: any) {
       await me.detectNetwork(x);
@@ -86,10 +87,12 @@ export class WorkSpacePlugin extends PluginClient {
     WalletConnectQRCodeModal.open(uri, function () {
       console.log("qr modal done");
     });
+    return true
   }
 
   async dismiss() {
     WalletConnectQRCodeModal.close();
+    return true
   }
 
   async connect() {

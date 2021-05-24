@@ -11,6 +11,7 @@ export class WorkSpacePlugin extends PluginClient {
   accounts = new BehaviorSubject<string[] | undefined>(undefined);
   status = new BehaviorSubject<boolean>(false);
   compilationresult = new BehaviorSubject<any>({});
+  timer: any;
   constructor() {
     super();
 
@@ -36,7 +37,7 @@ export class WorkSpacePlugin extends PluginClient {
       me.accounts.next(x);
       await me.dismiss();
       me.status.next(x.length > 0);
-      me.feedback.next(x.length >0 ? 'Connected':'No accounts connected')
+      me.feedback.next(x.length > 0 ? "Connected" : "No accounts connected");
     });
     this.on("walletconnect" as any, "chainChanged", async function (x: any) {
       await me.detectNetwork(x);
@@ -66,6 +67,13 @@ export class WorkSpacePlugin extends PluginClient {
     this.on("udapp" as any, "deploy", (x: any) => {});
 
     this.on("udapp" as any, "receipt", (x: any) => {});
+
+    this.startTimer();
+  }
+  async startTimer() {
+    this.timer = setTimeout(async (x: any) => {
+      await this.getAccounts(false);
+    }, 1000);
   }
 
   async detectNetwork(id: number) {
@@ -87,12 +95,12 @@ export class WorkSpacePlugin extends PluginClient {
     WalletConnectQRCodeModal.open(uri, function () {
       console.log("qr modal done");
     });
-    return true
+    return true;
   }
 
   async dismiss() {
     WalletConnectQRCodeModal.close();
-    return true
+    return true;
   }
 
   async connect() {
@@ -119,20 +127,26 @@ export class WorkSpacePlugin extends PluginClient {
       await this.call("udapp" as any, "addNetwork", network);
       await this.getAccounts();
     } catch (e) {
-      this.feedback.next(e)
+      this.feedback.next(e);
     }
   }
-  async setAccount(account: string){
+  async setAccount(account: string) {
     await this.call("udapp" as any, "setAccount", account);
   }
 
-  async getAccounts() {
-    const accounts = await this.call("udapp" as any, "getAccounts");
-    console.log(accounts);
-    this.accounts.next(accounts);
-    this.status.next(accounts.length > 0);
-    this.feedback.next(
-      accounts.length > 0 ? "Connected" : "No accounts found."
-    );
+  async getAccounts(setAccount: boolean = true) {
+    try {
+      const accounts = await this.call(
+        "udapp" as any,
+        "getAccounts",
+        setAccount
+      );
+      console.log(accounts);
+      this.accounts.next(accounts);
+      this.status.next(accounts.length > 0);
+      this.feedback.next(
+        accounts.length > 0 ? "Connected" : "No accounts found."
+      );
+    } catch (e) {}
   }
 }

@@ -51,7 +51,7 @@ function App() {
     setReceipts([]);
   }
 
-  console.log("app contracts ", contractsRef.current);
+  //console.log("app contracts ", contractsRef.current);
 
   return (
     <div className="App">

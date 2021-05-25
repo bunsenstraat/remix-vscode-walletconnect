@@ -107,22 +107,8 @@ const Compiler: React.FunctionComponent<InterfaceProps> = (props) => {
         async (
           x: any
         ) => {
-          console.log(x)
-          sendContracts(x)
-          //logContract()
-        }
-      );
-      client.on(
-        "fileManager",
-        "currentFileChanged",
-        async (
-          x: any
-        ) => {
-          //console.clear()
-          let tx: any = {
-            contractAddress: '0x1234'
-          }
-          sendContracts(tx)
+          //console.log(x)
+          sendContracts(x.receipt, x.contractName,x.abi)
           //logContract()
         }
       );
@@ -165,7 +151,7 @@ const Compiler: React.FunctionComponent<InterfaceProps> = (props) => {
     );
   }
 
-  function sendContracts(txReceipt: any) {
+  function sendContracts(txReceipt: any, name: string, abi: any) {
     //console.log("send contracts", txReceipt, JSON.stringify(contractsRef.current), constractNameRef.current);
     if (contractsRef.current.data && contractsRef.current.data[constractNameRef.current]) {
       if (txReceipt && txReceipt.contractAddress) {
@@ -173,9 +159,9 @@ const Compiler: React.FunctionComponent<InterfaceProps> = (props) => {
         setAddress(txReceipt.contractAddress);
         //console.log("add contract", constractNameRef.current, txReceipt.contractAddress,getFunctions(contractsRef.current.data[contractName].abi))
         addNewContract({
-          name: constractNameRef.current,
+          name: name,
           address: txReceipt.contractAddress,
-          abi: getFunctions(contractsRef.current.data[constractNameRef.current].abi),
+          abi: getFunctions(abi),
         });
       }
     }

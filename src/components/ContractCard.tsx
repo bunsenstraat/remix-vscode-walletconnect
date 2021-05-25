@@ -30,7 +30,7 @@ const ContractCard: React.FunctionComponent<{
 	// blockscout: string;
 	contract: InterfaceContract;
 	index: number;
-	remove: () => void;
+	remove: (contract: InterfaceContract) => void;
 	addReceipt: (receipt: InterfaceReceipt) => void;
 }> = (props) => {
 	const [enable, setEnable] = React.useState<boolean>(true);
@@ -83,7 +83,7 @@ const ContractCard: React.FunctionComponent<{
 	}
 
 	return (
-		<CSSTransition in={enable} timeout={300} classNames="zoom" unmountOnExit onExited={remove}>
+		<CSSTransition in={enable} timeout={300} classNames="zoom" unmountOnExit>
 			<Card className="mb-2 pointer">
 				<Accordion.Toggle as={Card.Header} eventKey={`ccard_${index.toString()}`} className="px-2 py-1 form-control custom-select">
 					<strong className="align-middle">{contract.name}</strong>
@@ -106,7 +106,7 @@ const ContractCard: React.FunctionComponent<{
 						size="sm"
 						variant="link"
 						onClick={() => {
-							setEnable(false);
+							remove(contract);
 						}}
 					>
 						<i className="fas fa-trash-alt" />

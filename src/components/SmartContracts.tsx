@@ -33,6 +33,7 @@ interface InterfaceSmartContractsProps {
 	// blockscout: string;
 	contracts: InterfaceContract[];
 	addReceipt: (receipt: InterfaceReceipt) => void;
+	remove: (contract: InterfaceContract) => void;
 }
 
 const SmartContracts: React.FunctionComponent<InterfaceSmartContractsProps> = (props) => {
@@ -43,7 +44,8 @@ const SmartContracts: React.FunctionComponent<InterfaceSmartContractsProps> = (p
 		setBusy,
 		// blockscout,
 		contracts,
-		addReceipt
+		addReceipt,
+		remove
 	} = props;
 
 	React.useEffect(() => {
@@ -60,9 +62,9 @@ const SmartContracts: React.FunctionComponent<InterfaceSmartContractsProps> = (p
 				// blockscout={blockscout}
 				contract={data}
 				index={index}
-				remove={() => {
-					setCount(count + 1);
-					setError(EMPTYLIST);
+				remove={(contract) => {
+					console.log("REM", contract)
+					remove(contract)
 				}}
 				key={`Contract_${index.toString()}`}
 			/>

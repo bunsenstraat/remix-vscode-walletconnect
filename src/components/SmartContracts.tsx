@@ -1,31 +1,12 @@
 import React from 'react';
-import { Alert, Accordion, Button, Card, Form, InputGroup } from 'react-bootstrap';
-import copy from 'copy-to-clipboard';
-import { CSSTransition } from 'react-transition-group';
-import { AbiInput, AbiItem } from 'web3-utils';
-// import { MoonbeamLib } from '@dexfair/moonbeamLib-web-signer';
-import DrawMethod from './DrawMethods'
+import { Alert, Accordion, Card } from 'react-bootstrap';
 import ContractCard from './ContractCard'
 import { InterfaceContract, InterfaceReceipt } from './Types';
-import Method from './Method';
 import './animation.css';
 
 const EMPTYLIST = 'Currently you have no contract instances to interact with.';
 
-function buttonVariant(stateMutability: string | undefined): string {
-	switch (stateMutability) {
-		case 'view':
-		case 'pure':
-			return 'primary';
-		case 'nonpayable':
-			return 'warning';
-		case 'payable':
-			return 'danger';
-		default:
-			break;
-	}
-	return '';
-}
+
 
 interface InterfaceSmartContractsProps {
 	busy: boolean;

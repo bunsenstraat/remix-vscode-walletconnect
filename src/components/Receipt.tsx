@@ -1,7 +1,6 @@
 import React from 'react';
-import { client } from '../App';
 import './Receipt.css';
-import { Alert, Accordion, Button, Card, Form, InputGroup } from 'react-bootstrap';
+import { Card } from 'react-bootstrap';
 import ReceiptItem from './ReceiptItem';
 import { InterfaceReceipt } from './Types';
 

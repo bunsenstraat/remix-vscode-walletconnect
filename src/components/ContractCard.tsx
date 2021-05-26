@@ -1,28 +1,12 @@
 import React from 'react';
-import { Alert, Accordion, Button, Card, Form, InputGroup } from 'react-bootstrap';
+import { Accordion, Button, Card } from 'react-bootstrap';
 import copy from 'copy-to-clipboard';
 import { CSSTransition } from 'react-transition-group';
-import { AbiInput, AbiItem } from 'web3-utils';
+import { AbiItem } from 'web3-utils';
 // import { MoonbeamLib } from '@dexfair/moonbeamLib-web-signer';
 import DrawMethod from './DrawMethods'
 import { InterfaceContract, InterfaceReceipt } from './Types';
-import Method from './Method';
 import './animation.css';
-
-function buttonVariant(stateMutability: string | undefined): string {
-	switch (stateMutability) {
-		case 'view':
-		case 'pure':
-			return 'primary';
-		case 'nonpayable':
-			return 'warning';
-		case 'payable':
-			return 'danger';
-		default:
-			break;
-	}
-	return '';
-}
 
 const ContractCard: React.FunctionComponent<{
 	busy: boolean;

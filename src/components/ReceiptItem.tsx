@@ -1,13 +1,8 @@
 import React, { useState } from "react";
-import { client } from "../App";
 import "./Receipt.css";
 import {
-  Alert,
-  Accordion,
   Button,
   Card,
-  Form,
-  InputGroup,
   Collapse,
 } from "react-bootstrap";
 import copy from "copy-to-clipboard";

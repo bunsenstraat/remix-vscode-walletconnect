@@ -1,22 +1,16 @@
 import React from "react";
 import {
   Alert,
-  Accordion,
   Button,
-  Card,
   Form,
   InputGroup,
 } from "react-bootstrap";
-import copy from "copy-to-clipboard";
-import { CSSTransition } from "react-transition-group";
 import { AbiInput, AbiItem } from "web3-utils";
 // import { MoonbeamLib } from '@dexfair/moonbeamLib-web-signer';
 import { client } from "../App";
-import { InterfaceContract, InterfaceReceipt } from "./Types";
+import { InterfaceReceipt } from "./Types";
 import Method from "./Method";
 import "./animation.css";
-
-const EMPTYLIST = "Currently you have no contract instances to interact with.";
 
 interface InterfaceDrawMethodProps {
   busy: boolean;
@@ -94,7 +88,6 @@ const DrawMethod: React.FunctionComponent<InterfaceDrawMethodProps> = (
               abi.inputs?.forEach((item: AbiInput) => {
                 parms.push(args[item.name]);
               });
-              console.log(parms);
               //
               try {
 				setError("")
@@ -137,10 +130,6 @@ const DrawMethod: React.FunctionComponent<InterfaceDrawMethodProps> = (
                       parms.push(args[item.name]);
                     }
                   });
-                  console.log(parms);
-                  console.log(abi.name);
-                  console.log(address);
-                  console.log(abi);
                 } catch (e) {
                   console.log(e.toString());
                 }

@@ -30,7 +30,6 @@ function App() {
   const receiptRef = React.useRef(receipts);
 
   React.useEffect(() => {
-    console.log("update contracts", contracts);
     contractsRef.current = contracts;
   }, [contracts]);
 
@@ -63,8 +62,6 @@ function App() {
     receiptRef.current = [];
     setReceipts([]);
   }
-
-  //console.log("app contracts ", contractsRef.current);
 
   return (
     <div className="App">

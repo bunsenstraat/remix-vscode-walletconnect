@@ -78,7 +78,6 @@ const ContractCard: React.FunctionComponent<{
 				</Card>
 			</Accordion>
 		));
-		console.log(items);
 		return <>{items}</>;
 	}
 

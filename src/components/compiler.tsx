@@ -10,10 +10,6 @@ import { client } from "../App";
 import Method from "./Method";
 import { InterfaceContract } from "./Types";
 
-
-console.log("test")
-
-
 function getFunctions(abi: AbiItem[]): AbiItem[] {
   const temp: AbiItem[] = [];
   abi.forEach((element: AbiItem) => {
@@ -60,16 +56,12 @@ const Compiler: React.FunctionComponent<InterfaceProps> = (props) => {
   const [args, setArgs] = React.useState<{ [key: string]: string }>({});
   const [address, setAddress] = React.useState<string>("");
   const [errors, setErrors] = React.useState<CompilationErrorFormatted[]>([]);
-  const [languageVersion, setLangVersion] = React.useState<string>("");
   const contractsRef = React.useRef(contracts)
   const constractNameRef = React.useRef(contractName)
 
   const { addNewContract, setSelected } = props;
 
-  //console.log("CONTRACTS on LOAD", JSON.stringify(contractsRef.current));
-
   React.useEffect(() => {
-    console.log("init compiler");
     async function init() {
 
       client.on(
@@ -83,7 +75,6 @@ const Compiler: React.FunctionComponent<InterfaceProps> = (props) => {
         ) => {
           //setLangVersion(_languageVersion);
           if (data.errors) {
-            console.log("data.errors", data.errors);
             setErrors(
               data.errors.map((error: CompilationError) => {
                 return {
@@ -107,7 +98,6 @@ const Compiler: React.FunctionComponent<InterfaceProps> = (props) => {
         async (
           x: any
         ) => {
-          //console.log(x)
           sendContracts(x.receipt, x.contractName,x.abi)
           //logContract()
         }
@@ -119,7 +109,6 @@ const Compiler: React.FunctionComponent<InterfaceProps> = (props) => {
 
   React.useEffect(
     () => {
-      console.log("update contracts", contracts)
       contractsRef.current = contracts;
     },
     [contracts]
@@ -127,7 +116,6 @@ const Compiler: React.FunctionComponent<InterfaceProps> = (props) => {
 
   React.useEffect(
     () => {
-      console.log("update name", contractName)
       constractNameRef.current = contractName;
     },
     [contractName]
@@ -137,12 +125,9 @@ const Compiler: React.FunctionComponent<InterfaceProps> = (props) => {
 
   function pushContract(data: CompilationResult, fn: string) {
     if (data.contracts[fn]) {
-      //console.log("set contract", JSON.stringify({ fileName: fn, data: data.contracts[fn] }));
       setContracts({ fileName: fn, data: data.contracts[fn] });
     } else {
-      console.log("contract ", fn, " not found");
     }
-    // console.log("CONTRACTs", contracts);
     select(
       Object.keys(data.contracts[fn]).length > 0
         ? Object.keys(data.contracts[fn])[0]
@@ -152,12 +137,9 @@ const Compiler: React.FunctionComponent<InterfaceProps> = (props) => {
   }
 
   function sendContracts(txReceipt: any, name: string, abi: any) {
-    //console.log("send contracts", txReceipt, JSON.stringify(contractsRef.current), constractNameRef.current);
     if (contractsRef.current.data && contractsRef.current.data[constractNameRef.current]) {
       if (txReceipt && txReceipt.contractAddress) {
-        console.log("add contract?", contractsRef.current, constractNameRef.current, getFunctions(contractsRef.current.data[constractNameRef.current].abi))
-        setAddress(txReceipt.contractAddress);
-        //console.log("add contract", constractNameRef.current, txReceipt.contractAddress,getFunctions(contractsRef.current.data[contractName].abi))
+         setAddress(txReceipt.contractAddress);
         addNewContract({
           name: name,
           address: txReceipt.contractAddress,
@@ -174,7 +156,6 @@ const Compiler: React.FunctionComponent<InterfaceProps> = (props) => {
     const abi = newContracts
       ? newContracts[name].abi
       : contracts.data[name].abi;
-    console.log("select contract", name)
     setContractName(name);
     setConstructor(null);
     setArgs({});
@@ -265,8 +246,6 @@ const Compiler: React.FunctionComponent<InterfaceProps> = (props) => {
 
   const onDeploy = async () => {
     const parms: string[] = getArguments(constructor, args);
-    console.log(parms);
-    console.log(contractName);
     props.setBusy(true)
     try {
       setErrors([])

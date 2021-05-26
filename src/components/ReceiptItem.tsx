@@ -21,7 +21,6 @@ const ReceiptItem: React.FunctionComponent<ReceiptItemProps> = (props) => {
   const [open, setOpen] = useState(false);
   const render = (r: InterfaceReceipt) => {
     if (typeof r.receipt === "object") {
-      console.log("RENDER");
       return (
             <>
               {Object.entries(r.receipt).map((a, ai) => (

@@ -60,7 +60,7 @@ export class WorkSpacePlugin extends PluginClient {
         _languageVersion: string,
         data: CompilationResult
       ) => {
-        console.log(data);
+
       }
     );
 
@@ -91,9 +91,7 @@ export class WorkSpacePlugin extends PluginClient {
   }
 
   async qr(uri: string) {
-    console.log("QR ", uri);
     WalletConnectQRCodeModal.open(uri, function () {
-      console.log("qr modal done");
     });
     return true;
   }
@@ -104,14 +102,12 @@ export class WorkSpacePlugin extends PluginClient {
   }
 
   async connect() {
-    console.log("connect");
     WalletConnectQRCodeModal.close();
 
     this.call("walletconnect" as any, "connect");
   }
 
   async disconnect() {
-    console.log("disconnect");
     WalletConnectQRCodeModal.close();
     try {
       await this.call("walletconnect" as any, "disconnect");
@@ -141,7 +137,6 @@ export class WorkSpacePlugin extends PluginClient {
         "getAccounts",
         setAccount
       );
-      console.log(accounts);
       this.accounts.next(accounts);
       this.status.next(accounts.length > 0);
       this.feedback.next(

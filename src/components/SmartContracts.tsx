@@ -63,7 +63,6 @@ const SmartContracts: React.FunctionComponent<InterfaceSmartContractsProps> = (p
 				contract={data}
 				index={index}
 				remove={(contract) => {
-					console.log("REM", contract)
 					remove(contract)
 				}}
 				key={`Contract_${index.toString()}`}

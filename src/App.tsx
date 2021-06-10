@@ -10,6 +10,7 @@ import AtAddress from "./components/AtAddress";
 import { Card, Form } from "react-bootstrap";
 import Loading from "react-fullscreen-loading";
 import AddNetwork from "./components/AddNetwork";
+import AddRemixD from "./components/AddRemixD";
 
 export const client = new WorkSpacePlugin();
 function App() {
@@ -83,12 +84,13 @@ function App() {
               <>
                 <button
                   className="btn btn-primary mb-3 btn-sm small"
-                  onClick={async () => await client.connect()}
+                  onClick={async () => await client.connectWallet()}
                 >
                   <i className="fas fa-link mr-2"></i>
                   Connect to wallet
                 </button>
                 <AddNetwork></AddNetwork>
+                <AddRemixD></AddRemixD>
               </>
             )}
 

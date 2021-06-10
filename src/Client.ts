@@ -68,6 +68,15 @@ export class WorkSpacePlugin extends PluginClient {
 
     this.on("udapp" as any, "receipt", (x: any) => {});
 
+    this.on("remixdprovider" as any, "statusChanged", async (x: any) => {
+      console.log(x)
+      if(x === "disconnect"){
+        await this.disconnect()
+      }else{
+        await this.getAccounts()
+      }
+    });
+
     this.startTimer();
   }
   async startTimer() {
@@ -101,7 +110,7 @@ export class WorkSpacePlugin extends PluginClient {
     return true;
   }
 
-  async connect() {
+  async connectWallet() {
     WalletConnectQRCodeModal.close();
 
     this.call("walletconnect" as any, "connect");
@@ -111,6 +120,7 @@ export class WorkSpacePlugin extends PluginClient {
     WalletConnectQRCodeModal.close();
     try {
       await this.call("walletconnect" as any, "disconnect");
+      await this.call("remixdprovider" as any, "disconnect");
     } catch (e) {
       this.feedback.next("Disconnected");
       this.accounts.next(undefined);
@@ -126,12 +136,23 @@ export class WorkSpacePlugin extends PluginClient {
       this.feedback.next(e);
     }
   }
+
+  async addRemixD(network: string) {
+    try {
+      await this.call("remixdprovider" as any, "connect", network);
+      //await this.getAccounts();
+    } catch (e) {
+      this.feedback.next(e);
+    }
+  }
+
   async setAccount(account: string) {
     await this.call("udapp" as any, "setAccount", account);
   }
 
   async getAccounts(setAccount: boolean = true) {
     try {
+      console.log("wallet get accounts")
       const accounts = await this.call(
         "udapp" as any,
         "getAccounts",
@@ -142,6 +163,8 @@ export class WorkSpacePlugin extends PluginClient {
       this.feedback.next(
         accounts.length > 0 ? "Connected" : "No accounts found."
       );
-    } catch (e) {}
+    } catch (e) {
+      console.log("no connection")
+    }
   }
 }

@@ -8,6 +8,7 @@ import { BehaviorSubject } from "rxjs";
 export class WorkSpacePlugin extends PluginClient {
   callBackEnabled: boolean = true;
   feedback = new BehaviorSubject<string>("");
+  networkname = new BehaviorSubject<string>("");
   accounts = new BehaviorSubject<string[] | undefined>(undefined);
   status = new BehaviorSubject<boolean>(false);
   compilationresult = new BehaviorSubject<any>({});
@@ -59,9 +60,7 @@ export class WorkSpacePlugin extends PluginClient {
         source: any,
         _languageVersion: string,
         data: CompilationResult
-      ) => {
-
-      }
+      ) => {}
     );
 
     this.on("udapp" as any, "deploy", (x: any) => {});
@@ -69,11 +68,18 @@ export class WorkSpacePlugin extends PluginClient {
     this.on("udapp" as any, "receipt", (x: any) => {});
 
     this.on("remixdprovider" as any, "statusChanged", async (x: any) => {
-      console.log(x)
-      if(x === "disconnect"){
-        await this.disconnect()
-      }else{
-        await this.getAccounts()
+      //console.log(x);
+      if (x === "disconnected") {
+        if (this.networkname.getValue() === "remixd") {
+          this.feedback.next("Disconnected");
+          this.accounts.next(undefined);
+          this.status.next(false);
+        }
+      } else if (x === "connected") {
+        await this.getAccounts();
+        this.networkname.next("remixd")
+      } else {
+        this.feedback.next("waiting for connection ....");
       }
     });
 
@@ -100,8 +106,7 @@ export class WorkSpacePlugin extends PluginClient {
   }
 
   async qr(uri: string) {
-    WalletConnectQRCodeModal.open(uri, function () {
-    });
+    WalletConnectQRCodeModal.open(uri, function () {});
     return true;
   }
 
@@ -132,6 +137,7 @@ export class WorkSpacePlugin extends PluginClient {
     try {
       await this.call("udapp" as any, "addNetwork", network);
       await this.getAccounts();
+      this.networkname.next("custom network")
     } catch (e) {
       this.feedback.next(e);
     }
@@ -152,7 +158,7 @@ export class WorkSpacePlugin extends PluginClient {
 
   async getAccounts(setAccount: boolean = true) {
     try {
-      console.log("wallet get accounts")
+      console.log("wallet get accounts");
       const accounts = await this.call(
         "udapp" as any,
         "getAccounts",
@@ -164,7 +170,7 @@ export class WorkSpacePlugin extends PluginClient {
         accounts.length > 0 ? "Connected" : "No accounts found."
       );
     } catch (e) {
-      console.log("no connection")
+      console.log("no connection");
     }
   }
 }

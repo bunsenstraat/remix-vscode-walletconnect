@@ -7,6 +7,7 @@ import { useBehaviorSubject } from "./usesubscribe";
 import SmartContracts from "./components/SmartContracts";
 import Receipt from "./components/Receipt";
 import AtAddress from "./components/AtAddress";
+import CurrentFile from './components/CurrentFile'
 import { Card, Form } from "react-bootstrap";
 import Loading from "react-fullscreen-loading";
 import AddNetwork from "./components/AddNetwork";
@@ -26,7 +27,9 @@ function App() {
   const feedback = useBehaviorSubject(client.feedback);
   client.feedback.subscribe((x) => {}).unsubscribe();
   const status = useBehaviorSubject(client.status);
-  client.status.subscribe((x) => {}).unsubscribe();
+  client.status.subscribe((x) => { }).unsubscribe();
+  const network = useBehaviorSubject(client.networkname);
+  client.networkname.subscribe((x) => {}).unsubscribe();
   const contractsRef = React.useRef(contracts);
   const receiptRef = React.useRef(receipts);
 
@@ -78,7 +81,7 @@ function App() {
                 className="btn btn-primary mb-3 btn-sm small"
                 onClick={async () => await client.disconnect()}
               >
-                <i className="fas fa-unlink mr-2"></i>Disconnect
+                <i className="fas fa-unlink mr-2"></i>Disconnect from {network}
               </button>
             ) : (
               <>
@@ -126,6 +129,7 @@ function App() {
         </Card>
         {status ? (
           <>
+            <CurrentFile currentFile=""></CurrentFile>
             <Compiler
               setBusy={setBusy}
               setSelected={setSelected}

@@ -35,6 +35,7 @@ export class WorkSpacePlugin extends PluginClient {
     });
 
     this.on("walletconnect" as any, "accountsChanged", async function (x: any) {
+      console.log("wallet ",x )
       me.accounts.next(x);
       await me.dismiss();
       me.status.next(x.length > 0);

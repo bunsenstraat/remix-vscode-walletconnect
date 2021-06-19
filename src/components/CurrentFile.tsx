@@ -34,10 +34,12 @@ const CurrentFile: React.FunctionComponent<CurrentFileInterface> = (props) => {
   const [files, setFiles] = React.useState<string[]>([]);
 
   useEffect(() => {
+    let mounted = true
     setInterval(async () => {
-      await updateFile();
+     if(mounted) await updateFile();
     }, 2000);
-    updateFile();
+    if(mounted)updateFile();
+    return () => { mounted = false };
   }, []);
 
   const updateFile = async () => {
@@ -76,7 +78,7 @@ const CurrentFile: React.FunctionComponent<CurrentFileInterface> = (props) => {
             }}
           >
             {files?.map((file, index) => {
-              return <option value={file}>{file}</option>;
+              return <option key={index} value={file}>{file}</option>;
             })}
           </Form.Control>
           <button

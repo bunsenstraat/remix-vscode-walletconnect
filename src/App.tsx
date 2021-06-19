@@ -115,7 +115,7 @@ function App() {
                   }}
                 >
                   {accounts?.map((account, index) => {
-                    return <option value={account}>{account}</option>;
+                    return <option key={index} value={account}>{account}</option>;
                   })}
                 </Form.Control>
               </Form.Group>

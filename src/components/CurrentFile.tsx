@@ -59,8 +59,8 @@ const CurrentFile: React.FunctionComponent<CurrentFileInterface> = (props) => {
     client.call(
       "solidity" as any,
       "compile",
-      selectedVersion,
-      compilerOpts,
+      null,
+      null,
       file || files[0]
     );
   };

@@ -78,8 +78,10 @@ const ContractCard: React.FunctionComponent<{
 						variant="link"
 						size="sm"
 						className="float-left align-middle"
-						onClick={() => {
+						onClick={(e) => {
+							e.stopPropagation()
 							copy(contract.address);
+
 						}}
 					>
 						<i className="far fa-copy" />
@@ -88,7 +90,8 @@ const ContractCard: React.FunctionComponent<{
 						className="float-left align-middle"
 						size="sm"
 						variant="link"
-						onClick={() => {
+						onClick={(e) => {
+							e.stopPropagation()
 							remove(contract);
 						}}
 					>

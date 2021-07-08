@@ -50,3 +50,7 @@
 .pointer {
   cursor: pointer;
 }
+
+.valueselect {
+  width: 40% !important;
+}

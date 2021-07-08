@@ -76,7 +76,7 @@ const DrawMethod: React.FunctionComponent<InterfaceDrawMethodProps> = (
       >
         <small>{success}</small>
       </Alert>
-      <InputGroup className="mb-3">
+      <InputGroup className="mb-0">
         <InputGroup.Prepend>
           <Button
             variant={buttonVariant(abi.stateMutability)}
@@ -91,12 +91,10 @@ const DrawMethod: React.FunctionComponent<InterfaceDrawMethodProps> = (
               //
               try {
 				setError("")
-                let receiptData = await client.call(
-                  "udapp" as any,
-                  "send",
+                let receiptData = await client.send(
                   abi,
                   parms,
-                  address
+                  address,
                 );
                 const receipt: InterfaceReceipt = {
                   contract: contractName,

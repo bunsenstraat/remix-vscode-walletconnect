@@ -4,19 +4,19 @@ import {
   Form,
   InputGroup,
 } from "react-bootstrap";
-import { client } from "../App";
+import { client, useLocalStorage } from "../App";
 
 interface AddRemixDInterface {}
 
 const AddRemixD: React.FunctionComponent<AddRemixDInterface> = (props) => {
-  const [atAddress, setAtAddress] = React.useState<string>("https://remix.ethereum.org");
+  const [atAddress, setAtAddress] = useLocalStorage("remixurl", "https://remix.ethereum.org"); ///React.useState<string>("https://remix.ethereum.org");
 
   return (
     <>
       <p className="text-center mt-3">
         <small>OR</small>
       </p>
-      <InputGroup className="mb-3">
+      <InputGroup className="mb-0">
         <Form.Control
           value={atAddress}
           placeholder="https://remix.ethereum.org"

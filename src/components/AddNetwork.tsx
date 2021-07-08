@@ -6,19 +6,19 @@ import {
   OverlayTrigger,
   Tooltip,
 } from "react-bootstrap";
-import { client } from "../App";
+import { client, useLocalStorage } from "../App";
 
 interface AtNetWorkInterface {}
 
 const AddNetwork: React.FunctionComponent<AtNetWorkInterface> = (props) => {
-  const [atAddress, setAtAddress] = React.useState<string>("http://127.0.0.1:7545");
+  const [atAddress, setAtAddress] = useLocalStorage('network',"http://127.0.0.1:7545" ) // React.useState<string>("http://127.0.0.1:7545");
 
   return (
     <>
       <p className="text-center mt-3">
         <small>OR</small>
       </p>
-      <InputGroup className="mb-3">
+      <InputGroup className="mb-0">
         <Form.Control
           value={atAddress}
           placeholder="network url, ie Ganache http://127.0.0.1:7545"

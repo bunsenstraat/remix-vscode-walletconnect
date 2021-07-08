@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form } from 'react-bootstrap';
+import { Col, Form, Row } from 'react-bootstrap';
 import { AbiInput, AbiItem } from 'web3-utils';
 
 interface InterfaceProps {
@@ -17,13 +17,15 @@ const Method: React.FunctionComponent<InterfaceProps> = (props) => {
 
 	function DrawInputs() {
 		const items = inputs.map((item: AbiInput, index: number) => (
-			<React.Fragment key={index.toString()}>
-				<Form.Text className="text-muted">
+			<Form.Group className="mb-0 mt-0" as={Row} key={index.toString()}>
+				<Form.Label column sm="4" className="text-muted">
 					<small>{item.name}</small>
-				</Form.Text>
+				</Form.Label>
+				<Col sm="8">
 				<Form.Control
 					type="text"
 					size="sm"
+					className='inputfields'
 					name={item.name}
 					placeholder={item.type}
 					onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
@@ -34,7 +36,8 @@ const Method: React.FunctionComponent<InterfaceProps> = (props) => {
 						}
 					}}
 				/>
-			</React.Fragment>
+				</Col>
+			</Form.Group>
 		));
 		return <Form.Group>{items}</Form.Group>;
 	}

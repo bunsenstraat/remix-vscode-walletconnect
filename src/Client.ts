@@ -5,6 +5,7 @@ import WalletConnectQRCodeModal from "@walletconnect/qrcode-modal";
 import { CompilationResult } from "@remixproject/plugin-api";
 import { BehaviorSubject } from "rxjs";
 
+
 export class WorkSpacePlugin extends PluginClient {
   callBackEnabled: boolean = true;
   feedback = new BehaviorSubject<string>("");
@@ -12,7 +13,12 @@ export class WorkSpacePlugin extends PluginClient {
   accounts = new BehaviorSubject<string[] | undefined>(undefined);
   status = new BehaviorSubject<boolean>(false);
   compilationresult = new BehaviorSubject<any>({});
+
   timer: any;
+  gaslimit: string;
+  valueAmount: string;
+  valueType: string;
+
   constructor() {
     super();
 
@@ -25,6 +31,10 @@ export class WorkSpacePlugin extends PluginClient {
       .catch(async (e) => {
         console.log("ERROR CONNECTING", e);
       });
+      this.gaslimit = "3000000"
+      this.valueAmount = "0"
+      this.valueType = "wei";
+
   }
 
   async setCallBacks() {
@@ -35,7 +45,7 @@ export class WorkSpacePlugin extends PluginClient {
     });
 
     this.on("walletconnect" as any, "accountsChanged", async function (x: any) {
-      console.log("wallet ",x )
+      console.log("wallet ", x);
       me.accounts.next(x);
       await me.dismiss();
       me.status.next(x.length > 0);
@@ -78,7 +88,7 @@ export class WorkSpacePlugin extends PluginClient {
         }
       } else if (x === "connected") {
         await this.getAccounts();
-        this.networkname.next("remixd")
+        this.networkname.next("remixd");
       } else {
         this.feedback.next("waiting for connection ....");
       }
@@ -138,7 +148,7 @@ export class WorkSpacePlugin extends PluginClient {
     try {
       await this.call("udapp" as any, "addNetwork", network);
       await this.getAccounts();
-      this.networkname.next("custom network")
+      this.networkname.next("custom network");
     } catch (e) {
       this.feedback.next(e);
     }
@@ -173,5 +183,20 @@ export class WorkSpacePlugin extends PluginClient {
     } catch (e) {
       console.log("no connection");
     }
+  }
+
+  async send(abi: any, parms: any, address: any) {
+    let receiptData = await this.call(
+      "udapp" as any,
+      "send",
+      abi,
+      parms,
+      address,
+      this.valueAmount,
+      this.valueType,
+      this.gaslimit
+    );
+
+    return receiptData
   }
 }

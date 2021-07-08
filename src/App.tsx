@@ -17,7 +17,7 @@ export const client = new WorkSpacePlugin();
 function App() {
   //const [contracts, setContracts] = React.useState<InterfaceContract[]>([]);
   const [contracts, setContracts] = useLocalStorage("contracts", []);
-  const [receipts, setReceipts] = React.useState<InterfaceReceipt[]>([]);
+  const [receipts, setReceipts] = useLocalStorage("receipts", []); //React.useState<InterfaceReceipt[]>([]);
   const [busy, setBusy] = React.useState<boolean>(false);
   const [selected, setSelected] = React.useState<InterfaceContract | null>(
     null
@@ -78,15 +78,15 @@ function App() {
           <Card.Body>
             {status ? (
               <button
-                className="btn btn-primary mb-3 btn-sm small"
+                className="btn btn-primary mb-0 btn-sm small"
                 onClick={async () => await client.disconnect()}
               >
-                <i className="fas fa-unlink mr-2"></i>Disconnect from {network}
+                <i className="fas fa-unlink mr-2"></i>Disconnect
               </button>
             ) : (
               <>
                 <button
-                  className="btn btn-primary mb-3 btn-sm small"
+                  className="btn btn-primary mb-0 btn-sm small"
                   onClick={async () => await client.connectWallet()}
                 >
                   <i className="fas fa-link mr-2"></i>

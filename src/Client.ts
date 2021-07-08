@@ -10,13 +10,13 @@ export class WorkSpacePlugin extends PluginClient {
   callBackEnabled: boolean = true;
   feedback = new BehaviorSubject<string>("");
   networkname = new BehaviorSubject<string>("");
+  valueAmount = new BehaviorSubject<string>("0");
   accounts = new BehaviorSubject<string[] | undefined>(undefined);
   status = new BehaviorSubject<boolean>(false);
   compilationresult = new BehaviorSubject<any>({});
 
   timer: any;
   gaslimit: string;
-  valueAmount: string;
   valueType: string;
 
   constructor() {
@@ -32,7 +32,6 @@ export class WorkSpacePlugin extends PluginClient {
         console.log("ERROR CONNECTING", e);
       });
       this.gaslimit = "3000000"
-      this.valueAmount = "0"
       this.valueType = "wei";
 
   }
@@ -192,11 +191,11 @@ export class WorkSpacePlugin extends PluginClient {
       abi,
       parms,
       address,
-      this.valueAmount,
+      this.valueAmount.getValue(),
       this.valueType,
       this.gaslimit
     );
-
+    this.valueAmount.next("0")
     return receiptData
   }
 }

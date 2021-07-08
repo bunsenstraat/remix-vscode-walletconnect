@@ -10,6 +10,7 @@ import { AbiInput, AbiItem } from "web3-utils";
 import { client } from "../App";
 import Method from "./Method";
 import { InterfaceContract } from "./Types";
+import { useBehaviorSubject } from "../usesubscribe";
 
 const valueItems = ['wei','gwei','finney','ether'].map((key) => (
   <option key={key} value={key}>
@@ -52,7 +53,7 @@ const Compiler: React.FunctionComponent<InterfaceProps> = (props) => {
   const [fileName, setFileName] = React.useState<string>("");
   const [iconSpin, setIconSpin] = React.useState<string>("");
   const [valueType, setValueType] = React.useState<string>("wei");
-  const [valueAmount, setValueAmount] = React.useState<string>("0");
+
   const [gasLimit, setGasLimit] = React.useState<string>("3000000");
   const [contracts, setContracts] = React.useState<{
     fileName: string;
@@ -70,6 +71,9 @@ const Compiler: React.FunctionComponent<InterfaceProps> = (props) => {
   const constractNameRef = React.useRef(contractName)
 
   const { addNewContract, setSelected } = props;
+
+  const valueAmount = useBehaviorSubject(client.valueAmount);
+  client.accounts.subscribe((x) => {}).unsubscribe();
 
   React.useEffect(() => {
     async function init() {
@@ -281,8 +285,7 @@ const Compiler: React.FunctionComponent<InterfaceProps> = (props) => {
 
   const changeValueAmount = function(valueAmount: string){
     console.log(valueAmount);
-    setValueAmount(valueAmount)
-    client.valueAmount = valueAmount;
+    client.valueAmount.next(valueAmount)
   }
 
   const changeGasLimit = function(gas: string){

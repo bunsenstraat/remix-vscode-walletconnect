@@ -5,6 +5,7 @@ import {
   InputGroup,
   OverlayTrigger,
   Tooltip,
+  Image,
 } from "react-bootstrap";
 import { client, useLocalStorage } from "../App";
 
@@ -15,9 +16,9 @@ const AddNetwork: React.FunctionComponent<AtNetWorkInterface> = (props) => {
 
   return (
     <>
-      <p className="text-center mt-3">
-        <small>OR</small>
-      </p>
+    <Image className='mb-1' width='20' src="https://www.trufflesuite.com/img/ganache-logomark.svg" />
+    <Image className='mb-1 ml-1' width='20' src="https://walletconnect.org/walletconnect-logo.svg" />
+    <Image className='mb-1 ml-1' width='20' src="metamask.png" />
       <InputGroup className="mb-0">
         <Form.Control
           value={atAddress}
@@ -45,7 +46,7 @@ const AddNetwork: React.FunctionComponent<AtNetWorkInterface> = (props) => {
         </InputGroup.Append>
        
       </InputGroup>
-      <small>Connect to a custom network, for example Ganache.</small>
+      <small>Connect to a custom network, for example Ganache, Truffle or Hardhat.</small>
     </>
   );
 };

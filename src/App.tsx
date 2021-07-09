@@ -8,7 +8,7 @@ import SmartContracts from "./components/SmartContracts";
 import Receipt from "./components/Receipt";
 import AtAddress from "./components/AtAddress";
 import CurrentFile from './components/CurrentFile'
-import { Card, Form } from "react-bootstrap";
+import { Button, Card, Form } from "react-bootstrap";
 import Loading from "react-fullscreen-loading";
 import AddNetwork from "./components/AddNetwork";
 import AddRemixD from "./components/AddRemixD";
@@ -85,15 +85,17 @@ function App() {
               </button>
             ) : (
               <>
-                <button
-                  className="btn btn-primary mb-0 btn-sm small"
+                <h5>Connect to a network to deploy</h5>
+                <AddNetwork></AddNetwork>
+                <AddRemixD></AddRemixD>
+                <hr></hr>
+                <Button variant="primary" size="sm" 
                   onClick={async () => await client.connectWallet()}
                 >
                   <i className="fas fa-link mr-2"></i>
-                  Connect to wallet
-                </button>
-                <AddNetwork></AddNetwork>
-                <AddRemixD></AddRemixD>
+                  Connect to Wallet Connect
+                </Button>
+                <hr></hr>
               </>
             )}
 

@@ -12,6 +12,7 @@ import { InterfaceReceipt } from "./Types";
 import Method from "./Method";
 import "./animation.css";
 
+
 interface InterfaceDrawMethodProps {
   busy: boolean;
   setBusy: (state: boolean) => void;
@@ -51,6 +52,8 @@ const DrawMethod: React.FunctionComponent<InterfaceDrawMethodProps> = (
     });
     setArgs(temp);
   }, [abi.inputs]);
+
+
 
   return (
     <>
@@ -115,37 +118,10 @@ const DrawMethod: React.FunctionComponent<InterfaceDrawMethodProps> = (
                 : abi.name}
             </small>
           </Button>
-          <Button
-            variant={buttonVariant(abi.stateMutability)}
-            size="sm"
-            className="mt-0 pt-0 float-right"
-            onClick={() => {
-              if (abi.name) {
-                try {
-                  const parms: string[] = [];
-                  abi.inputs?.forEach((item: AbiInput) => {
-                    if (args[item.name]) {
-                      parms.push(args[item.name]);
-                    }
-                  });
-                } catch (e) {
-                  console.log(e.toString());
-                }
-              }
-            }}
-          >
-            <i className="far fa-copy" />
-          </Button>
+
         </InputGroup.Prepend>
-        <Form.Control
-          value={value}
-          size="sm"
-          readOnly
-          hidden={
-            !(abi.stateMutability === "view" || abi.stateMutability === "pure")
-          }
-        />
       </InputGroup>
+      <hr></hr>
     </>
   );
 };

@@ -13,9 +13,7 @@ const AddRemixD: React.FunctionComponent<AddRemixDInterface> = (props) => {
 
   return (
     <>
-      <p className="text-center mt-3">
-        <small>OR</small>
-      </p>
+      <hr></hr>
       <InputGroup className="mb-0">
         <Form.Control
           value={atAddress}
@@ -29,7 +27,7 @@ const AddRemixD: React.FunctionComponent<AddRemixDInterface> = (props) => {
             <Button variant="primary" size="sm" onClick={async () => {
                 await client.addRemixD(atAddress)
             }}>
-              <small>Connect</small>
+              <small>Connect to REMIX</small>
             </Button>
         </InputGroup.Append>
        

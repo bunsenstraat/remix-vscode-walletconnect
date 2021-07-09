@@ -45,10 +45,12 @@
   font-size: 12px !important;
 }
 
-.walletconnect-modal__footer {
-  display: none !important;
-}
+
 
 .pointer {
   cursor: pointer;
+}
+
+.valueselect {
+  width: 40% !important;
 }

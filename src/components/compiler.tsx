@@ -1,5 +1,6 @@
 import React from "react";
-import { Alert, Button, Card, Form, InputGroup } from "react-bootstrap";
+import { Alert, Button, Card, InputGroup } from "react-bootstrap";
+import Form from 'react-bootstrap/Form';
 import {
   CompilationError,
   CompilationResult,
@@ -9,6 +10,13 @@ import { AbiInput, AbiItem } from "web3-utils";
 import { client } from "../App";
 import Method from "./Method";
 import { InterfaceContract } from "./Types";
+import { useBehaviorSubject } from "../usesubscribe";
+
+const valueItems = ['wei','gwei','finney','ether'].map((key) => (
+  <option key={key} value={key}>
+    {`${key}`}
+  </option>
+));
 
 function getFunctions(abi: AbiItem[]): AbiItem[] {
   const temp: AbiItem[] = [];
@@ -44,6 +52,9 @@ interface CompilationErrorFormatted {
 const Compiler: React.FunctionComponent<InterfaceProps> = (props) => {
   const [fileName, setFileName] = React.useState<string>("");
   const [iconSpin, setIconSpin] = React.useState<string>("");
+  const [valueType, setValueType] = React.useState<string>("wei");
+
+  const [gasLimit, setGasLimit] = React.useState<string>("3000000");
   const [contracts, setContracts] = React.useState<{
     fileName: string;
     data: any;
@@ -60,6 +71,9 @@ const Compiler: React.FunctionComponent<InterfaceProps> = (props) => {
   const constractNameRef = React.useRef(contractName)
 
   const { addNewContract, setSelected } = props;
+
+  const valueAmount = useBehaviorSubject(client.valueAmount);
+  client.accounts.subscribe((x) => {}).unsubscribe();
 
   React.useEffect(() => {
     async function init() {
@@ -183,6 +197,8 @@ const Compiler: React.FunctionComponent<InterfaceProps> = (props) => {
       </option>
     ));
 
+
+
     return (
       <Form>
         <Form.Group>
@@ -234,7 +250,7 @@ const Compiler: React.FunctionComponent<InterfaceProps> = (props) => {
               onChange={(e) => {
                 select(e.target.value);
               }}
-              className="form-control custom-select"
+              className="valueselect form-control custom-select"
             >
               {items}
             </Form.Control>
@@ -260,6 +276,24 @@ const Compiler: React.FunctionComponent<InterfaceProps> = (props) => {
     }
     props.setBusy(false)
   };
+
+  const changeValueType = function(valueType: string){
+    console.log(valueType);
+    setValueType(valueType)
+    client.valueType = valueType;
+  }
+
+  const changeValueAmount = function(valueAmount: string){
+    console.log(valueAmount);
+    client.valueAmount.next(valueAmount)
+  }
+
+  const changeGasLimit = function(gas: string){
+    console.log(gas);
+    setGasLimit(gas)
+    client.gaslimit = gas;
+  }
+
 
   return (
     <div className="Compiler">
@@ -295,15 +329,43 @@ const Compiler: React.FunctionComponent<InterfaceProps> = (props) => {
             );
           })}
           <InputGroup className="mb-3">
+            <InputGroup.Prepend>
+              <InputGroup.Text className='small' id="basic-addon3">
+              <small>Gas limit</small>
+              </InputGroup.Text>
+            </InputGroup.Prepend>
+            <Form.Control size='sm' onChange={(e)=>changeGasLimit(e.target.value)} value={gasLimit} id="gaslimit" aria-describedby="basic-addon3" />
+          </InputGroup>
+          <InputGroup className="mb-3">
+            <InputGroup.Prepend>
+              <InputGroup.Text className='small' id="basic-addon3">
+              <small>Value</small>
+              </InputGroup.Text>
+            </InputGroup.Prepend>
+            <Form.Control onChange={(e)=>changeValueAmount(e.target.value)} value={valueAmount} id="value" aria-describedby="basic-addon3" />
+            <InputGroup.Append>
+            <Form.Control
+              as="select"
+              onChange={(e) => {
+                changeValueType(e.target.value);
+              }}
+              className="form-control custom-select"
+            >
+              {valueItems}
+            </Form.Control>
+            </InputGroup.Append>
+          </InputGroup>
+          <InputGroup className="mb-0">
             <InputGroup.Append>
               <Button variant="warning" block size="sm" onClick={onDeploy}>
                 <small>Deploy</small>
               </Button>
+              
             </InputGroup.Append>
           </InputGroup>
           <Form.Group>
             <Form.Label>Deployed Contract Address</Form.Label>
-            <InputGroup className="mb-3">
+            <InputGroup className="mb-0">
               {address !== "" ? (
                 <InputGroup.Append>
                   <Button

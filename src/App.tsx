@@ -7,7 +7,8 @@ import { useBehaviorSubject } from "./usesubscribe";
 import SmartContracts from "./components/SmartContracts";
 import Receipt from "./components/Receipt";
 import AtAddress from "./components/AtAddress";
-import { Card, Form } from "react-bootstrap";
+import CurrentFile from './components/CurrentFile'
+import { Button, Card, Form } from "react-bootstrap";
 import Loading from "react-fullscreen-loading";
 import AddNetwork from "./components/AddNetwork";
 import AddRemixD from "./components/AddRemixD";
@@ -16,7 +17,7 @@ export const client = new WorkSpacePlugin();
 function App() {
   //const [contracts, setContracts] = React.useState<InterfaceContract[]>([]);
   const [contracts, setContracts] = useLocalStorage("contracts", []);
-  const [receipts, setReceipts] = React.useState<InterfaceReceipt[]>([]);
+  const [receipts, setReceipts] = useLocalStorage("receipts", []); //React.useState<InterfaceReceipt[]>([]);
   const [busy, setBusy] = React.useState<boolean>(false);
   const [selected, setSelected] = React.useState<InterfaceContract | null>(
     null
@@ -26,7 +27,9 @@ function App() {
   const feedback = useBehaviorSubject(client.feedback);
   client.feedback.subscribe((x) => {}).unsubscribe();
   const status = useBehaviorSubject(client.status);
-  client.status.subscribe((x) => {}).unsubscribe();
+  client.status.subscribe((x) => { }).unsubscribe();
+  const network = useBehaviorSubject(client.networkname);
+  client.networkname.subscribe((x) => {}).unsubscribe();
   const contractsRef = React.useRef(contracts);
   const receiptRef = React.useRef(receipts);
 
@@ -75,22 +78,24 @@ function App() {
           <Card.Body>
             {status ? (
               <button
-                className="btn btn-primary mb-3 btn-sm small"
+                className="btn btn-primary mb-0 btn-sm small"
                 onClick={async () => await client.disconnect()}
               >
                 <i className="fas fa-unlink mr-2"></i>Disconnect
               </button>
             ) : (
               <>
-                <button
-                  className="btn btn-primary mb-3 btn-sm small"
+                <h5>Connect to a network to deploy</h5>
+                <AddNetwork></AddNetwork>
+                <AddRemixD></AddRemixD>
+                <hr></hr>
+                <Button variant="primary" size="sm" 
                   onClick={async () => await client.connectWallet()}
                 >
                   <i className="fas fa-link mr-2"></i>
-                  Connect to wallet
-                </button>
-                <AddNetwork></AddNetwork>
-                <AddRemixD></AddRemixD>
+                  Connect to Wallet Connect
+                </Button>
+                <hr></hr>
               </>
             )}
 
@@ -112,7 +117,7 @@ function App() {
                   }}
                 >
                   {accounts?.map((account, index) => {
-                    return <option value={account}>{account}</option>;
+                    return <option key={index} value={account}>{account}</option>;
                   })}
                 </Form.Control>
               </Form.Group>
@@ -126,6 +131,7 @@ function App() {
         </Card>
         {status ? (
           <>
+            <CurrentFile currentFile=""></CurrentFile>
             <Compiler
               setBusy={setBusy}
               setSelected={setSelected}

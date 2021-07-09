@@ -20,7 +20,7 @@ const AtAddress: React.FunctionComponent<AtAddressInterface> = (props)=>{
         <p className="text-center mt-3">
 					<small>OR</small>
 				</p>
-				<InputGroup className="mb-3">
+				<InputGroup className="mb-0">
 					<Form.Control
 						value={atAddress}
 						placeholder="contract address"

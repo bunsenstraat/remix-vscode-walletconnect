@@ -54,8 +54,8 @@ const SmartContracts: React.FunctionComponent<InterfaceSmartContractsProps> = (p
 
 	return (
 		<div className="SmartContracts">
-			<Alert variant="warning" className="text-center small p-0" hidden={contracts.length !== count}>
-				<small>{error}</small>
+			<Alert variant="warning" className="text-center p-1" hidden={contracts.length !== count}>
+				{error}
 			</Alert>
 			<Card className='mt-2'>
 				<Card.Header className="p-2 small">Run</Card.Header>

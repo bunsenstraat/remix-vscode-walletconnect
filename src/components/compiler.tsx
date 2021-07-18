@@ -202,7 +202,7 @@ const Compiler: React.FunctionComponent<InterfaceProps> = (props) => {
     return (
       <Form>
         <Form.Group>
-          <Form.Text className="text-muted text-left">
+          <Form.Text className=" text-left">
             <small>CONTRACT</small>
             <Button
 							variant="link"

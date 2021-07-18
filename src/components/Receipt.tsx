@@ -21,7 +21,7 @@ const Receipt: React.FunctionComponent<ReceiptProperties> = (props) => {
 
 	return (<Card className='mt-2'>
 		<Card.Header className="p-2 small">Output</Card.Header>
-		<div className='text-muted text-right small mr-3 point' onClick={()=>{clearOutput()}}><i className="fas fa-trash-alt" /></div>
+		<div className=' text-right small mr-3 point' onClick={()=>{clearOutput()}}><i className="fas fa-trash-alt" /></div>
 		<hr></hr>
 		{receipts.slice(0).reverse().map((r, i) => {
 			return (<>

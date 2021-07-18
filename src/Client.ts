@@ -14,6 +14,7 @@ export class WorkSpacePlugin extends PluginClient {
   accounts = new BehaviorSubject<string[] | undefined>(undefined);
   status = new BehaviorSubject<boolean>(false);
   compilationresult = new BehaviorSubject<any>({});
+  remixdStatus = new BehaviorSubject<number>(0)
 
   timer: any;
   gaslimit: string;
@@ -78,18 +79,24 @@ export class WorkSpacePlugin extends PluginClient {
     this.on("udapp" as any, "receipt", (x: any) => {});
 
     this.on("remixdprovider" as any, "statusChanged", async (x: any) => {
-      //console.log(x);
+      console.log(x, this.networkname.getValue());
+      //let network = await this.fetchNetwork()
+      // console.log(network);
       if (x === "disconnected") {
         if (this.networkname.getValue() === "remixd") {
           this.feedback.next("Disconnected");
           this.accounts.next(undefined);
           this.status.next(false);
+          
         }
+        this.remixdStatus.next(0)
       } else if (x === "connected") {
         await this.getAccounts();
         this.networkname.next("remixd");
+        this.remixdStatus.next(2)
       } else {
-        this.feedback.next("waiting for connection ....");
+        //this.feedback.next("waiting for connection with Remix .... Please visit the Remix URL your specified and select localhost from the file explorer.");
+        this.remixdStatus.next(1)
       }
     });
 
@@ -111,7 +118,7 @@ export class WorkSpacePlugin extends PluginClient {
     else if (id === 4) networkName = "Rinkeby";
     else if (id === 5) networkName = "Goerli";
     else if (id === 42) networkName = "Kovan";
-    else networkName = "Custom";
+    else networkName = "local or customized";
     this.feedback.next(`Network is ${networkName}`);
   }
 
@@ -145,7 +152,7 @@ export class WorkSpacePlugin extends PluginClient {
 
   async addNetwork(network: string) {
     try {
-      await this.call("udapp" as any, "addNetwork", network);
+      await this.call("network" as any, "addNetwork", network);
       await this.getAccounts();
       this.networkname.next("custom network");
     } catch (e) {
@@ -179,6 +186,20 @@ export class WorkSpacePlugin extends PluginClient {
       this.feedback.next(
         accounts.length > 0 ? "Connected" : "No accounts found."
       );
+      await this.fetchNetwork()
+    } catch (e) {
+      console.log("no connection");
+    }
+  }
+
+  async fetchNetwork(){
+    try {
+      console.log("fetch network");
+      const network = await this.call(
+        "network" as any,
+        "detectNetwork"
+      );
+      this.feedback.next(`Network is ${network?.name}`);  
     } catch (e) {
       console.log("no connection");
     }

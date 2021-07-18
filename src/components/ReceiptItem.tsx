@@ -99,13 +99,13 @@ const ReceiptItem: React.FunctionComponent<ReceiptItemProps> = (props) => {
 
   return (
     <>
-      <Card.Body className="py-1 px-2 small">
+      <Card.Body className="py-1 px-2">
         <div>
           <div
             onClick={() => setOpen(!open)}
             aria-controls={`receipt_collapse_${props.index}`}
             aria-expanded={open}
-            className="small underline point text-muted"
+            className="underline point"
           >
             {`Run ${props.receipt.method} at ${props.receipt.contractAddress} on ${props.receipt.contract}`}
             <i hidden={open} className="ml-2 fas fa-caret-down" />

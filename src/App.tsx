@@ -8,7 +8,7 @@ import SmartContracts from "./components/SmartContracts";
 import Receipt from "./components/Receipt";
 import AtAddress from "./components/AtAddress";
 import CurrentFile from './components/CurrentFile'
-import { Button, Card, Form } from "react-bootstrap";
+import { Alert, Button, Card, Form } from "react-bootstrap";
 import Loading from "react-fullscreen-loading";
 import AddNetwork from "./components/AddNetwork";
 import AddRemixD from "./components/AddRemixD";
@@ -30,6 +30,8 @@ function App() {
   client.status.subscribe((x) => { }).unsubscribe();
   const network = useBehaviorSubject(client.networkname);
   client.networkname.subscribe((x) => {}).unsubscribe();
+  const remixdstatus = useBehaviorSubject(client.remixdStatus);
+  client.remixdStatus.subscribe((x) => {}).unsubscribe();
   const contractsRef = React.useRef(contracts);
   const receiptRef = React.useRef(receipts);
 
@@ -67,12 +69,17 @@ function App() {
     setReceipts([]);
   }
 
+  async function refreshAccounts(){
+    await client.getAccounts();
+  }
+
   return (
     <div className="App">
       <div className="container">
         <Loading loading={busy} background="#000000" loaderColor="#ffffff" />
-        <div className="text-muted text-left">
+        <div className=" text-left">
           <small>Connection</small>
+ 
         </div>
         <Card>
           <Card.Body>
@@ -105,7 +112,10 @@ function App() {
                 <small>Connected accounts</small>
               </>
             ) : (
-              <></>
+              <>
+                  {remixdstatus == 1? <>Remixd is waiting for a connection...</>:<></>}
+                  {remixdstatus == 2? <>Remixd is connected</>:<></>}
+              </>
             )}
             {accounts && accounts?.length > 0 ? (
               <Form.Group controlId="exampleForm.ControlSelect1">
@@ -120,13 +130,14 @@ function App() {
                     return <option key={index} value={account}>{account}</option>;
                   })}
                 </Form.Control>
+                <Button onClick={async()=>{ await refreshAccounts()}} className='mt-1' size='sm'>Refresh accounts</Button>
               </Form.Group>
             ) : (
               <></>
             )}
 
             <br></br>
-            <div className="small">{feedback}</div>
+            <Alert variant='secondary'>{feedback}</Alert>
           </Card.Body>
         </Card>
         {status ? (

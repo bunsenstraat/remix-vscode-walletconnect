@@ -2,8 +2,10 @@ import React from "react";
 import {
   Alert,
   Button,
+  Col,
   Form,
   InputGroup,
+  Row,
 } from "react-bootstrap";
 import { AbiInput, AbiItem } from "web3-utils";
 // import { MoonbeamLib } from '@dexfair/moonbeamLib-web-signer';
@@ -57,6 +59,12 @@ const DrawMethod: React.FunctionComponent<InterfaceDrawMethodProps> = (
 
   return (
     <>
+      <div className='text-primary text-left font-weight-bold mb-1'><u>
+        {abi.stateMutability === "view" || abi.stateMutability === "pure"
+          ? abi.name
+          : abi.name}
+      </u>
+      </div>
       <Method
         abi={abi}
         setArgs={(name: string, value2: string) => {
@@ -79,12 +87,16 @@ const DrawMethod: React.FunctionComponent<InterfaceDrawMethodProps> = (
       >
         <small>{success}</small>
       </Alert>
-      <InputGroup className="mb-0">
-        <InputGroup.Prepend>
+      <Form.Group className="mb-0 mt-0" as={Row}>
+        <Col className="text-left" sm="4">
+
+        </Col>
+        <Col sm="8">
           <Button
             variant={buttonVariant(abi.stateMutability)}
             block
             size="sm"
+            className="w-100"
             onClick={async () => {
               setBusy(true);
               const parms: string[] = [];
@@ -93,7 +105,7 @@ const DrawMethod: React.FunctionComponent<InterfaceDrawMethodProps> = (
               });
               //
               try {
-				setError("")
+                setError("")
                 let receiptData = await client.send(
                   abi,
                   parms,
@@ -114,13 +126,12 @@ const DrawMethod: React.FunctionComponent<InterfaceDrawMethodProps> = (
           >
             <small>
               {abi.stateMutability === "view" || abi.stateMutability === "pure"
-                ? abi.name
-                : abi.name}
+                ? 'CALL'
+                : 'TRANSACT'}
             </small>
           </Button>
-
-        </InputGroup.Prepend>
-      </InputGroup>
+        </Col>
+      </Form.Group>
       <hr></hr>
     </>
   );

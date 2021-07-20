@@ -59,7 +59,7 @@ const DrawMethod: React.FunctionComponent<InterfaceDrawMethodProps> = (
 
   return (
     <>
-      <div className='text-primary text-left font-weight-bold mb-1'><u>
+      <div className='text-uppercase font-weight-bold text-left font-weight-bold mb-1'><u>
         {abi.stateMutability === "view" || abi.stateMutability === "pure"
           ? abi.name
           : abi.name}

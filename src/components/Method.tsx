@@ -18,7 +18,7 @@ const Method: React.FunctionComponent<InterfaceProps> = (props) => {
 	function DrawInputs() {
 		const items = inputs.map((item: AbiInput, index: number) => (
 			<Form.Group className="mb-0 mt-0" as={Row} key={index.toString()}>
-				<Col className="text-left" sm="4">
+				<Col className="text-right" sm="4">
 					{item.name}
 				</Col>
 				<Col sm="8">
